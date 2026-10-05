@@ -1,0 +1,33 @@
+schema: spec-driven
+
+context: |
+Projeto: Pet Finder
+Domínio: plataforma web para adoção responsável de animais.
+Usuários principais: pessoas interessadas em adotar animais e ONGs responsáveis por animais disponíveis para adoção.
+
+Funcionalidades principais:
+
+* cadastro e acesso de usuários e ONGs;
+* cadastro e gerenciamento de animais;
+* busca e descoberta de animais;
+* sistema de match entre usuários e animais;
+* solicitações de adoção;
+* gerenciamento de solicitações pelas ONGs.
+
+Arquitetura:
+
+* Frontend: Reflex.
+* Backend e persistência: Xano.
+* Desenvolvimento orientado por especificações: OpenSpec.
+
+Regra arquitetural de frontend:
+O frontend deve ser implementado exclusivamente com Reflex.
+Não introduzir outra tecnologia de frontend sem uma mudança arquitetural explicitamente aprovada.
+
+Princípios:
+
+* desenvolvimento incremental;
+* analisar e revisar mudanças antes da implementação;
+* manter o modelo de domínio conceitual separado da implementação física;
+* utilizar OpenSpec para organizar mudanças e especificações;
+* preservar segurança e integridade dos dados.
