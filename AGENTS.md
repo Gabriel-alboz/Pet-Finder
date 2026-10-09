@@ -82,6 +82,10 @@ Não introduza outra tecnologia de frontend para substituir
 ou complementar o Reflex, salvo quando houver uma alteração
 arquitetural explicitamente aprovada.
 
+## Design System do Pet Finder
+
+Antes de criar telas ou alterar estilos de telas existentes, consulte `docs/design-system.md` e reutilize os padrões documentados. Não introduza cores, fontes, raios ou espaçamentos arbitrários quando já houver um padrão aplicável. Atualize o documento quando um padrão visual oficial mudar. A interface permanece exclusiva de Reflex.
+
 ## Desenvolvimento
 
 O desenvolvimento deve seguir uma abordagem incremental.

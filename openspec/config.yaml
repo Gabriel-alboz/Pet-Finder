@@ -1,33 +1,3 @@
 schema: spec-driven
 
-context: |
-Projeto: Pet Finder
-Domínio: plataforma web para adoção responsável de animais.
-Usuários principais: pessoas interessadas em adotar animais e ONGs responsáveis por animais disponíveis para adoção.
-
-Funcionalidades principais:
-
-* cadastro e acesso de usuários e ONGs;
-* cadastro e gerenciamento de animais;
-* busca e descoberta de animais;
-* sistema de match entre usuários e animais;
-* solicitações de adoção;
-* gerenciamento de solicitações pelas ONGs.
-
-Arquitetura:
-
-* Frontend: Reflex.
-* Backend e persistência: Xano.
-* Desenvolvimento orientado por especificações: OpenSpec.
-
-Regra arquitetural de frontend:
-O frontend deve ser implementado exclusivamente com Reflex.
-Não introduzir outra tecnologia de frontend sem uma mudança arquitetural explicitamente aprovada.
-
-Princípios:
-
-* desenvolvimento incremental;
-* analisar e revisar mudanças antes da implementação;
-* manter o modelo de domínio conceitual separado da implementação física;
-* utilizar OpenSpec para organizar mudanças e especificações;
-* preservar segurança e integridade dos dados.
+context: "Projeto: Pet Finder\nDomínio: plataforma web para adoção responsável de animais.\nUsuários principais: pessoas interessadas em adotar animais e ONGs responsáveis por animais disponíveis para adoção.\n\nFuncionalidades principais:\n\n* cadastro e acesso de usuários e ONGs;\n* cadastro e gerenciamento de animais;\n* busca e descoberta de animais;\n* sistema de match entre usuários e animais;\n* solicitações de adoção;\n* gerenciamento de solicitações pelas ONGs.\n\nArquitetura:\n\n* Frontend: Reflex.\n* Backend e persistência: Xano.\n* Desenvolvimento orientado por especificações: OpenSpec.\n\nRegra arquitetural de frontend:\nO frontend deve ser implementado exclusivamente com Reflex.\nNão introduzir outra tecnologia de frontend sem uma mudança arquitetural explicitamente aprovada.\n\nPrincípios:\n\n* desenvolvimento incremental;\n* analisar e revisar mudanças antes da implementação;\n* manter o modelo de domínio conceitual separado da implementação física;\n* utilizar OpenSpec para organizar mudanças e especificações;\n* preservar segurança e integridade dos dados.\n\nDesign System:\nPara mudanças que criem ou alterem a interface, consultar `docs/design-system.md` ao elaborar propostas, especificações, designs e tarefas, e aplicar seus padrões durante a implementação."
