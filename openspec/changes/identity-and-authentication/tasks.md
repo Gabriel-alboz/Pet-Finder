@@ -13,10 +13,7 @@
 
 ## 3. Authentication and Backend Security
 
-- [ ] 3.1 Adapt the shared Xano login/current-user flow to authenticate either account type and return only required safe account data; verify valid adopter/NGO logins, invalid credentials, and type identification using backend tests.
-- [ ] 3.2 Implement backend-controlled session invalidation on logout using the Xano mechanism confirmed in task 1; verify a protected request with the ended session is rejected and document the endpoint/session contract.
-- [ ] 3.3 Audit signup, login, password reset, and authentication event logging; remove secret-bearing metadata and ensure passwords use Xano's secure password mechanism, then verify logs and non-auth API responses contain no password, token, or real credential values.
-- [ ] 3.4 Apply backend authorization checks to protected account operations using authenticated identity and account type rather than caller-supplied ownership; verify adopter/ONG role boundaries and attempts to access another account's data with negative backend tests.
+- [ ] 3.1 Adapt the shared Xano login/current-user flow to authenticate either account type and return only required safe account data; verify valid adopter/ONG logins, invalid credentials, and type identification using backend tests.
 
 ## 4. Reflex Account Experience
 

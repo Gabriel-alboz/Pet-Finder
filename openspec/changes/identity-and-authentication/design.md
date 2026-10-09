@@ -2,7 +2,9 @@
 
 ## Context
 
-See `proposal.md` for motivation and `specs/identity-and-authentication/spec.md` for the behavior contract. The Reflex app is currently the initial scaffold. The versioned Xano files contain one authenticated `user` table with a unique email index, password field, and `role` values `admin/member`, plus generic signup, login, current-user, and password-reset endpoints. Signup/login and password reset pass user records into event-log metadata. The available Xano knowledge query returned no workspace items; no live workspace schema or data was confirmed.
+See `proposal.md` for motivation and `specs/identity-and-authentication/spec.md` for the behavior contract. The Reflex login is still a local demo and does not call Xano. A read-only pull of workspace `151970`, its only branch `v1` (live), confirmed the deployed `user` table has `id`, `created_at`, `name`, `email`, `password`, `role` (`admin/member`) and `password_reset`; it has a unique email index but no `account_type`, contact, adopter, or ONG profile fields. The remote event table is `event_log` (singular) and references `user`. The remote authentication and reset endpoints are generic quick-start implementations and send full user records to the logger; the remote `logs/user/my_events` endpoint returns complete event rows, including metadata. The workspace reports `Allow Push: false`; no remote writes or record exports were performed.
+
+The checked-in Xano snapshot is a proposed divergent state: it adds `account_type`, contact/profile fields, and CPF/CNPJ indexes. The local schema now preserves `role` separately from `account_type`; local signup assigns new customer accounts the least-privilege role `member`. Local authentication/reset endpoints are not deployed to remote `v1`. The local logger now applies an allowlist (`account_type` only), and the local event-history endpoint masks metadata; neither change affects already stored remote events until manually deployed. See `docs/xano-authentication-setup.md` for the verified comparison and manual migration plan.
 
 ## Goals / Non-Goals
 
@@ -22,7 +24,7 @@ See `proposal.md` for motivation and `specs/identity-and-authentication/spec.md`
 
 ### Reuse the Xano authentication identity and separate account type from legacy role
 
-Use the existing authenticated `user` identity as the shared email/password authentication record, subject to checking the actual Xano branch before implementation. Represent customer account type with exactly `ADOTANTE` or `ONG`; do not treat the scaffold's `admin/member` values as customer account types. Preserve existing records and role behavior until their use and any required mapping are known; do not silently rewrite or delete them.
+Use the existing authenticated `user` identity as the shared email/password authentication record. Represent customer account type with exactly `ADOTANTE` or `ONG`; keep it distinct from legacy `role` values `admin/member`, which remain for authorization. New customer accounts receive `member`; an ONG is never assigned `admin` automatically. Preserve existing records and do not infer account type from role or silently rewrite/delete users.
 
 Alternatives considered: create separate authentication tables per account type, which duplicates credential handling and complicates global email uniqueness; reinterpret `admin/member` as the two customer types, which would conflate existing authorization roles with account identity and cannot represent the required values.
 
@@ -56,6 +58,10 @@ Alternative considered: assume Xano automatically masks password fields in event
 - [Xano's exact unique-index, relationship, or session-revocation behavior may differ from the local snapshot] → Validate against the connected workspace and document alternatives before applying schema or API changes.
 - [Phone and identifier normalization policy is not fully specified] → Define and document accepted input/normalization during implementation without weakening required validation or backend uniqueness.
 - [Existing authentication logs may contain credential fields] → Audit current event data/retention and prevent further sensitive metadata from being written; assess handling of prior records before any cleanup.
+- [Logger allowlist currently retains only `account_type`] → Require an explicit security review before adding other metadata keys; do not pass whole records or request/response objects.
+- [Remote `my_events` returns stored metadata that may contain historical credentials] → Apply the local allowlisted event response in an approved development branch; assess old records separately without exposing or deleting them automatically.
+- [Only live branch `v1` is available and CLI push is disabled] → Keep remote unchanged; ask the workspace owner to provide an approved development branch before applying snapshots.
+- [Local auth endpoints require fields absent from remote `user`] → Do not connect the Reflex client to the current live contract; migrate and verify a development branch first.
 
 ## Migration Plan
 
@@ -67,5 +73,6 @@ Alternative considered: assume Xano automatically masks password fields in event
 
 ## Open Questions
 
-- The MCP workspace knowledge list is empty and no live Xano branch/data was available in the inspected project context. The implementation must identify the target workspace/branch and verify that the local `.xs` snapshot reflects it before planning a migration.
+- The read-only workspace pull confirmed deployed schema/source files, but not production records, runtime behavior, or historical logs. Verify those separately in the approved development workspace before deployment.
 - Confirm the exact accepted phone-number validation/normalization policy and CPF/CNPJ input normalization before implementation; the required validation and uniqueness behavior remain fixed by the spec.
+- The API group base URL is absent from the repository. Obtain it from the workspace owner before configuring a Reflex client; do not infer the URL from the workspace ID.

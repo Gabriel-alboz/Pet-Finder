@@ -14,7 +14,13 @@ query "logs/user/my_events" verb=GET {
     } as $user_events
   }
 
-  response = $user_events
+  response = $user_events|map:{
+    id: $$.id,
+    created_at: $$.created_at,
+    user_id: $$.user_id,
+    action: $$.action,
+    metadata: {},
+  }
   tags = ["xano:quick-start"]
   guid = "cIkiQvBrdxT2rujpoNt-xWZMzAA"
 }

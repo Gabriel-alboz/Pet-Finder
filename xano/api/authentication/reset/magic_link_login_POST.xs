@@ -27,7 +27,6 @@ query "reset/magic-link-login" verb=POST {
         "created_at"
         "name"
         "email"
-        "role"
         "password_reset.token"
         "password_reset.expiration"
         "password_reset.used"
@@ -82,7 +81,7 @@ query "reset/magic-link-login" verb=POST {
       input = {
         user_id : $user.id
         action  : "login_for_password_reset"
-        metadata: $user1
+        metadata: {}
       }
     } as $event_log
   }
