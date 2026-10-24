@@ -6,6 +6,14 @@ Esta página documenta a comparação feita para `identity-and-authentication`. 
 
 O CLI autenticado encontrou o workspace `Gabriel's Workspace` (ID `151970`), com somente a branch `v1`, marcada como live. O comando informou `Allow Push: false`. Não há branch de desenvolvimento disponível neste workspace; qualquer criação ou autorização de branch precisa ser feita pelo responsável do workspace.
 
+### Verificação de acesso para integração do cadastro
+
+Em uma nova consulta somente de leitura, o workspace continuou no plano Free, com `Allow Push: false` e apenas `v1` live. Uma tentativa autorizada de criar uma branch de desenvolvimento foi recusada pelo Xano porque branching exige plano pago; a criação de sandbox também foi recusada por não ser suportada no plano Free. Nenhuma alteração remota foi feita.
+
+O `xano workspace push --directory xano --branch v1 --dry-run` foi usado apenas para revisar o impacto, sem enviar documentos. O preview listou alterações em `user`, funções de log/CPF, o grupo Authentication e seis endpoints de autenticação e eventos. O endpoint remoto `auth/signup` continua aceitando apenas nome, e-mail e senha, enquanto o formulário exige classificação e dados específicos de adotante/ONG. Não conectar o formulário a esse endpoint live: os campos adicionais não são suportados pelo contrato remoto e a chamada poderia criar uma conta genérica incompleta.
+
+Para publicar o snapshot de forma segura, é necessário um workspace/ambiente Xano de desenvolvimento com permissão de escrita ou habilitar um plano que permita branch/sandbox. Após autorização do responsável, também foi tentada a criação de um workspace separado para desenvolvimento, mas a Metadata API respondeu `403 Access Denied`; nenhum workspace foi criado. O responsável precisa habilitar criação de ambientes no Xano ou fornecer outro workspace de desenvolvimento gravável antes que a integração possa ser ativada.
+
 ## Diferença entre modelo remoto e snapshot local
 
 ### Remoto, branch live `v1`
@@ -32,11 +40,13 @@ Os endpoints locais de autenticação foram atualizados para usar `account_type`
 - Logging: não colocar usuário completo, senha, hash, token, email ou dados de perfil em metadata. O `user_id` permanece no campo próprio do evento para correlação interna.
 - `logs/user/my_events`: a consulta continua restrita a `$auth.id` e preserva os campos do evento, mas devolve `metadata: {}`. Isso também evita expor metadata histórico inseguro; não apaga os valores antigos armazenados no Xano.
 
-## Configuração necessária para futura integração Reflex
+## Configuração do cliente Reflex de cadastro
 
 O projeto ainda não define URL da API do Xano em `rxconfig.py`, `requirements.txt` ou nas instruções de setup. A URL base do grupo de API precisa ser obtida do workspace/branch escolhido; não deve ser presumida a partir do ID do workspace.
 
-Quando o contrato estiver implantado e aprovado, configurar uma variável de ambiente do processo backend, por exemplo `XANO_API_BASE_URL`, com o endereço confirmado do grupo de API. Não inserir URL/token funcional no repositório, não expor token Xano em estado/JavaScript do navegador e não registrar corpo de requisição, senha ou cabeçalhos de autenticação. Esta variável ainda não é lida pelo frontend nesta etapa.
+O cliente local da tela de cadastro usa `XANO_API_BASE_URL` no processo backend e envia `POST {XANO_API_BASE_URL}/auth/signup`, conforme o snapshot versionado. Defina-a somente com a URL confirmada do grupo de API de uma branch compatível. A URL não está disponível neste repositório e o snapshot não está implantado na única branch remota conhecida (`v1`, live); portanto, a integração ainda não foi validada contra o Xano e o cadastro retorna mensagem de indisponibilidade sem essa configuração. Não inserir URL/token funcional no repositório, não expor token Xano em estado/JavaScript do navegador e não registrar corpo de requisição, senha ou cabeçalhos de autenticação.
+
+A resposta versionada de signup inclui `authToken`, mas o cliente descarta esse token, pois o Reflex ainda não tem ciclo de sessão e armazenamento seguro implementados; após o cadastro, a pessoa deve entrar pela rota `/login`. A UI valida formato de CPF/CNPJ, UF e telefone, mas o snapshot documenta validação de presença e duplicidade, não essas validações de formato. Elas precisam ser implementadas e verificadas no backend antes de considerar o requisito de segurança atendido. O campo de responsável de ONG também não existe no contrato/schema versionado e não é coletado.
 
 ## Plano manual de migração não destrutivo
 
@@ -47,7 +57,7 @@ Quando o contrato estiver implantado e aprovado, configurar uma variável de amb
 5. Confirmar a tabela `event_log` e seu relacionamento com `user`; não renomear tabela nem apagar eventos durante a migração. Aplicar os endpoints locais só depois que o schema compatível existir na branch de desenvolvimento.
 6. Aplicar na branch de desenvolvimento os callsites sanitizados de todos os escritores e a projeção segura de `logs/user/my_events`; eventos históricos permanecem armazenados e devem ser avaliados pelo responsável sem exportá-los para logs/clientes.
 7. Executar testes Xano nessa branch: signup válido/inválido para cada tipo, email/CPF/CNPJ duplicados, login, `/me`, magic link, reset de senha e leitura de eventos; inspecionar logs para provar ausência de dados sensíveis. Registrar evidência antes de qualquer promoção.
-8. Obter a URL do grupo de API dessa branch e configurar `XANO_API_BASE_URL` no processo backend. Só então implementar/testar o cliente Reflex em mudança própria.
+8. Obter a URL do grupo de API dessa branch, configurar `XANO_API_BASE_URL` no processo backend e validar o cliente Reflex de cadastro já implementado localmente contra esse contrato.
 9. Antes de produção, revisar o plano com o responsável. Rollback deve restaurar endpoints/schema sem apagar registros; não remover `role`, contas antigas ou tabelas de eventos como ação automática.
 
 ## Pendências confirmadas

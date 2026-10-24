@@ -1,5 +1,8 @@
 import reflex as rx
 
+from Pet_Finder.home import home_page
+from Pet_Finder.register import registration_page
+
 
 class LoginState(rx.State):
     email: str = ""
@@ -293,7 +296,7 @@ def login_page() -> rx.Component:
                                 text_align="center",
                                 width="100%",
                             ),
-                            href="#",
+                            href="/register",
                             width="100%",
                         ),
                         rx.link(
@@ -306,7 +309,7 @@ def login_page() -> rx.Component:
                                 text_align="center",
                                 width="100%",
                             ),
-                            href="#",
+                            href="/register",
                             width="100%",
                         ),
                         direction="column",
@@ -398,3 +401,5 @@ def index() -> rx.Component:
 app = rx.App()
 app.add_page(index, route="/")
 app.add_page(login_page, route="/login")
+app.add_page(registration_page, route="/register")
+app.add_page(home_page, route="/home")
