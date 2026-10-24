@@ -1,5 +1,7 @@
 # Project Overview — Pet Finder
 
+Este documento descreve a **visão do produto**, não uma lista de entregas concluídas. O estado implementado e as evidências ficam em [project-status.md](project-status.md); requisitos futuros em [functional-requirements.md](functional-requirements.md).
+
 ## 1. Visão geral
 
 O Pet Finder é uma aplicação web voltada à adoção responsável de animais de estimação.
@@ -7,6 +9,8 @@ O Pet Finder é uma aplicação web voltada à adoção responsável de animais 
 O sistema tem como objetivo aproximar pessoas interessadas em adotar animais e organizações não governamentais (ONGs) responsáveis por animais disponíveis para adoção.
 
 A aplicação permitirá que ONGs cadastrem e gerenciem seus animais, enquanto usuários poderão criar seus perfis, encontrar animais compatíveis com suas preferências e demonstrar interesse na adoção.
+
+O quiz de compatibilidade será opcional: também será possível procurar pets diretamente por filtros combináveis de localização e características. A comunicação privada entre ADOTANTES e ONGs e a descoberta de adotantes que autorizem visibilidade fazem parte da evolução planejada, com consentimento e proteção de dados.
 
 O sistema também contará com um processo de solicitação de adoção, permitindo que o interesse do usuário seja encaminhado à ONG responsável pelo animal.
 
@@ -178,6 +182,8 @@ Os principais documentos de contexto do projeto são:
 
 * `docs/project-overview.md` — visão geral do projeto;
 * `docs/domain-model.md` — conceitos e relacionamentos do domínio;
+* [Estado e evidências](project-status.md), [requisitos RF-01 a RF-10](functional-requirements.md) e [roadmap](roadmap.md);
+* [Arquitetura](architecture.md), [login](login-integration.md), [contratos Xano](xano-authentication-setup.md) e [Design System](design-system.md);
 * `AGENTS.md` — regras de trabalho para o agente;
 * `openspec/config.yaml` — contexto e regras utilizados pelos workflows do OpenSpec;
 * `openspec/specs/` — especificações do sistema;

@@ -122,3 +122,12 @@ arquivos versionados ou documentação.
 
 Qualquer alteração arquitetural deve ser explicitamente aprovada
 antes de ser incorporada ao projeto.
+## Referências e manutenção incremental
+
+Antes de planejar mudanças, consultar `docs/project-status.md`, `docs/architecture.md`, `docs/functional-requirements.md` e `docs/roadmap.md`, além das referências existentes. Distinguir visão conceitual, requisito futuro, interface demonstrativa, integração operacional e evidência de teste. Relatos de teste do responsável devem ser identificados como tais; testes offline não comprovam operação live ou inspeção visual.
+
+Preservar arquitetura, componentes reutilizáveis, navegação compartilhada desktop/mobile, Design System e alterações locais preexistentes. A Home usa seções locais protegidas; não duplicar rotas nem autenticação sem necessidade aprovada. Quiz é complementar e opcional; não bloquear busca direta de pets por sua realização. Chat demonstrativo não deve aparentar envio ou exibir conversas fictícias.
+
+Não modificar Xano ou dados de produção, publicar endpoints/funções ou executar testes funcionais live sem autorização específica. Até consultas como auth/me podem gravar auditoria. Não executar Git push, commit ou deploy sem autorização; não descartar alterações locais.
+
+Antes da entrega, validar sintaxe, testes offline relevantes, compile Reflex, OpenSpec quando aplicável, diff e status. Registrar limitações e testes manuais pendentes. Não expor segredos nem marcar requisitos futuros como concluídos por possuir apenas uma interface.

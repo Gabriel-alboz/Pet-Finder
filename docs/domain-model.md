@@ -35,7 +35,7 @@ Permitir que uma pessoa mantenha suas informações de usuário e utilize os rec
 
 ### Relacionamentos
 
-* Um usuário possui um perfil de adoção.
+* Um usuário pode manter um perfil de adoção; responder ao quiz não é obrigatório.
 * Um usuário pode receber vários matches com animais.
 * Um usuário pode realizar várias solicitações de adoção.
 * Cada solicitação de adoção é realizada por um único usuário.
@@ -192,7 +192,7 @@ A estrutura conceitual simplificada do domínio pode ser representada da seguint
 De forma conceitual:
 
 * uma **ONG** é responsável por um ou mais **Animais**;
-* um **Usuário** possui um **Perfil de adoção**;
+* um **Usuário** pode manter um **Perfil de adoção**; quiz é opcional;
 * um **Usuário** pode possuir vários **Matches**;
 * um **Animal** pode participar de vários **Matches**;
 * um **Usuário** pode realizar várias **Solicitações de adoção**;
@@ -216,3 +216,15 @@ O modelo de domínio poderá ser refinado durante o desenvolvimento do projeto.
 Novos conceitos, atributos conceituais ou relacionamentos poderão ser adicionados quando forem identificados durante o processo de Explore, Propose e desenvolvimento das mudanças do OpenSpec.
 
 Alterações relevantes no domínio deverão ser analisadas antes de sua implementação.
+
+## 11. Comunicação e consentimento — conceitos futuros
+
+No vocabulário de produto, a conta pode ser ADOTANTE ou ONG. O conceito de Usuário interessado em adoção deste documento corresponde ao ADOTANTE; isso não exige tabelas separadas por perfil. O schema físico atual e os contratos estão em [arquitetura](architecture.md) e [referência Xano](xano-authentication-setup.md).
+
+Uma **Conversa** representa comunicação privada entre ADOTANTE e ONG, com participantes autorizados e vínculo opcional a um Animal. Uma **Mensagem** pertence a uma conversa e identifica remetente, conteúdo e momento de envio. Estes conceitos são futuros; não há implementação física ou endpoints de chat nesta etapa.
+
+A **Visibilidade consentida** representa a autorização do adotante para compartilhar campos e preferências específicos com ONGs. Deve permitir retirada de consentimento e não equivale a publicação de documentos, endereço privado ou credenciais. A descoberta de interessados e o contato dependem dessa autorização e de regras de acesso no servidor.
+
+A busca direta de pets por filtros independe do quiz. Um match é uma recomendação futura, não aprovação de adoção nem algoritmo existente. Solicitações devem preservar a identificação das partes e status mesmo quando os detalhes do modelo físico forem definidos posteriormente.
+
+Detalhes e critérios permanecem centralizados em [RF-01 a RF-10](functional-requirements.md); consulte [estado](project-status.md) para distinguir conceitos de código operacional.

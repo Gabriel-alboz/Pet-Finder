@@ -1,6 +1,8 @@
-"""Public Home preview and section navigation for Pet Finder."""
+"""Existing Home layout and authenticated section navigation for Pet Finder."""
 
 import reflex as rx
+
+from Pet_Finder.auth import LoginState
 
 
 SECTIONS = {
@@ -8,6 +10,7 @@ SECTIONS = {
     "pets": "Pets",
     "ongs": "ONGs cadastradas",
     "quiz": "Quiz de compatibilidade",
+    "chats": "Chats",
     "account": "Configurações da conta",
 }
 
@@ -16,12 +19,20 @@ class HomeState(rx.State):
     active_section: str = "home"
     mobile_menu_open: bool = False
 
-    def open_section(self, section: str):
+    async def open_section(self, section: str):
+        auth = await self.get_state(LoginState)
+        if not auth.can_view_home:
+            auth._clear_session()
+            return rx.redirect("/login")
         if section in SECTIONS:
             self.active_section = section
             self.mobile_menu_open = False
 
-    def toggle_mobile_menu(self):
+    async def toggle_mobile_menu(self):
+        auth = await self.get_state(LoginState)
+        if not auth.can_view_home:
+            auth._clear_session()
+            return rx.redirect("/login")
         self.mobile_menu_open = not self.mobile_menu_open
 
 
@@ -77,8 +88,8 @@ def _account_footer() -> rx.Component:
                 flex_shrink="0",
             ),
             rx.vstack(
-                rx.text("Visitante", font_weight="600", color="#1F2937", font_size="0.9rem"),
-                rx.text("Sessão não conectada", color="#6B7280", font_size="0.75rem"),
+                rx.text(LoginState.display_name, font_weight="600", color="#1F2937", font_size="0.9rem"),
+                rx.text(LoginState.account_type, color="#6B7280", font_size="0.75rem"),
                 spacing="0",
                 align="start",
             ),
@@ -86,18 +97,15 @@ def _account_footer() -> rx.Component:
             align="center",
             spacing="3",
         ),
-        rx.link(
-            rx.button(
-                rx.hstack(rx.icon(tag="log-in", size=17), rx.text("Ir para o login"), spacing="2"),
-                width="100%",
-                variant="soft",
-                color="#5B21B6",
-                background="#F5F3FF",
-                border_radius="0.8rem",
-                _focus={"outline": "2px solid #7C3AED", "outline_offset": "2px"},
-            ),
-            href="/login",
+        rx.button(
+            rx.hstack(rx.icon(tag="log-out", size=17), rx.text("Sair"), spacing="2"),
+            on_click=LoginState.logout,
             width="100%",
+            variant="soft",
+            color="#5B21B6",
+            background="#F5F3FF",
+            border_radius="0.8rem",
+            _focus={"outline": "2px solid #7C3AED", "outline_offset": "2px"},
         ),
         width="100%",
         spacing="3",
@@ -115,6 +123,7 @@ def _sidebar(*, mobile: bool = False) -> rx.Component:
             _nav_item("ongs", "building-2"),
             _nav_item("pets", "paw-print"),
             _nav_item("quiz", "clipboard-list"),
+            _nav_item("chats", "messages-square"),
             _nav_item("account", "settings-2"),
             width="100%",
             align="stretch",
@@ -315,21 +324,58 @@ def _home_content() -> rx.Component:
     )
 
 
-def _section_content() -> rx.Component:
+def _chats_content() -> rx.Component:
+    return rx.vstack(
+        _section_heading("Chats", "Converse com ONGs e adotantes e acompanhe suas conversas."),
+        rx.text(
+            "Interface demonstrativa: o chat ainda não está conectado ao backend.",
+            color="#5B21B6", font_size="0.85rem", font_weight="600",
+        ),
+        _empty_state(
+            "Você ainda não possui conversas.",
+            "Quando iniciar uma conversa, ela aparecerá aqui.",
+            "messages-square",
+        ),
+        width="100%", align="stretch", spacing="5",
+    )
+
+
+def _account_future_features() -> rx.Component:
+    return rx.vstack(
+        rx.heading("Recursos planejados", size="4", color="#1F2937"),
+        rx.cond(
+            LoginState.account_type == "ADOTANTE",
+            rx.text(
+                "Futuramente: editar perfil, informar preferências de adoção e descrever o pet que procura.",
+                color="#6B7280", line_height="1.6",
+            ),
+            rx.cond(
+                LoginState.account_type == "ONG",
+                rx.text(
+                    "Futuramente: atualizar informações institucionais, gerenciar a descrição e cadastrar e gerenciar pets.",
+                    color="#6B7280", line_height="1.6",
+                ),
+            ),
+        ),
+        width="100%", align="start", spacing="3",
+    )
+
+
+def _existing_section_content() -> rx.Component:
     return rx.cond(
         HomeState.active_section == "home",
         _home_content(),
         rx.cond(
             HomeState.active_section == "pets",
             rx.vstack(
-                _section_heading("Encontre seu novo melhor amigo", "Explore os pets disponíveis e conheça suas histórias."),
+                _section_heading("Encontre seu novo melhor amigo", "Futuramente, encontre seu novo companheiro usando filtros de localização, espécie, porte e outras características. O quiz será opcional."),
                 _empty_state("Ainda não há catálogo conectado", "O projeto ainda não possui tabela nem endpoint confirmado para listar pets. Nenhum animal fictício será exibido.", "paw-print"),
                 width="100%", align="stretch", spacing="5",
             ),
             rx.cond(
                 HomeState.active_section == "ongs",
                 rx.vstack(
-                    _section_heading("ONGs cadastradas", "Conheça as organizações que trabalham para transformar a vida dos animais."),
+                    _section_heading("ONGs cadastradas", "Encontre organizações de adoção próximas de você. A pesquisa por estado e cidade está planejada."),
                     _empty_state("A listagem de ONGs ainda não está disponível", "O Xano não possui um endpoint de organizações no snapshot local. Os dados institucionais serão exibidos quando houver um contrato confirmado.", "building-2"),
                     width="100%", align="stretch", spacing="5",
                 ),
@@ -342,8 +388,9 @@ def _section_content() -> rx.Component:
                     ),
                     rx.vstack(
                         _section_heading("Configurações da conta", "Consulte e atualize as informações da sua conta."),
-                        _empty_state("Sua sessão não está conectada", "O login atual ainda não estabelece uma sessão verificável. Acesse o login para continuar; nenhum perfil será inventado ou alterado.", "user-round"),
-                        rx.link(rx.button("Ir para o login", background="#7C3AED", color="#FFFFFF", border_radius="0.8rem", _hover={"background": "#6D28D9"}), href="/login", align_self="start"),
+                        _empty_state("Sua conta está conectada", "A edição do perfil ainda não está disponível.", "user-round"),
+                        _account_future_features(),
+                        rx.button("Sair", on_click=LoginState.logout, background="#7C3AED", color="#FFFFFF", border_radius="0.8rem", _hover={"background": "#6D28D9"}, align_self="start"),
                         width="100%", align="stretch", spacing="5",
                     ),
                 ),
@@ -352,7 +399,15 @@ def _section_content() -> rx.Component:
     )
 
 
-def home_page() -> rx.Component:
+def _section_content() -> rx.Component:
+    return rx.cond(
+        HomeState.active_section == "chats",
+        _chats_content(),
+        _existing_section_content(),
+    )
+
+
+def _home_layout() -> rx.Component:
     return rx.flex(
         rx.box(_sidebar(), width="16rem", min_width="16rem", display=["none", "none", "block"]),
         rx.vstack(
@@ -394,4 +449,13 @@ def home_page() -> rx.Component:
         min_height="100vh",
         align="stretch",
         background="radial-gradient(circle at top left, rgba(196,181,253,0.18), transparent 30%), linear-gradient(135deg, #F8F7FC 0%, #F5F3FF 35%, #EEF2FF 100%)",
+    )
+
+
+def home_page() -> rx.Component:
+    # Do not render account data while the server validates the route/session.
+    return rx.cond(
+        LoginState.can_view_home,
+        _home_layout(),
+        rx.center(rx.spinner(color="#7C3AED"), min_height="100vh"),
     )

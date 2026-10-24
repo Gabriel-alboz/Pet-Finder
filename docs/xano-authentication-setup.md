@@ -1,71 +1,65 @@
-# Autenticação Xano — estado e preparação
+# Autenticação Xano — referência de implementação
 
-## Escopo e estado verificado
+## Escopo e origem
 
-Esta página documenta a comparação feita para `identity-and-authentication`. Nenhuma alteração foi enviada ao Xano remoto e nenhum registro foi exportado. A consulta remota foi somente de leitura, sem incluir variáveis de ambiente ou registros.
+Referência do código local em `xano/` e `Pet_Finder/services/xano.py`, consolidada na Etapa 21. A publicação seletiva dos seis recursos de segurança foi informada como concluída na Etapa 17. Não houve consulta ou alteração remota nesta etapa; descrição estrutural não equivale a novo teste funcional live. O planejamento histórico permanece no OpenSpec.
 
-O CLI autenticado encontrou o workspace `Gabriel's Workspace` (ID `151970`), com somente a branch `v1`, marcada como live. O comando informou `Allow Push: false`. Não há branch de desenvolvimento disponível neste workspace; qualquer criação ou autorização de branch precisa ser feita pelo responsável do workspace.
+Workspace 151970 (Gabriel's Workspace), branch publicada `v1`, plano Free sem branch isolada disponível neste ambiente. Não usar publicação global ou sincronização de workspace para validar o frontend.
 
-### Verificação de acesso para integração do cadastro
+## Configuração utilizada
 
-Em uma nova consulta somente de leitura, o workspace continuou no plano Free, com `Allow Push: false` e apenas `v1` live. Uma tentativa autorizada de criar uma branch de desenvolvimento foi recusada pelo Xano porque branching exige plano pago; a criação de sandbox também foi recusada por não ser suportada no plano Free. Nenhuma alteração remota foi feita.
+A variável `XANO_API_BASE_URL` do processo backend aponta ao grupo Authentication:
 
-O `xano workspace push --directory xano --branch v1 --dry-run` foi usado apenas para revisar o impacto, sem enviar documentos. O preview listou alterações em `user`, funções de log/CPF, o grupo Authentication e seis endpoints de autenticação e eventos. O endpoint remoto `auth/signup` continua aceitando apenas nome, e-mail e senha, enquanto o formulário exige classificação e dados específicos de adotante/ONG. Não conectar o formulário a esse endpoint live: os campos adicionais não são suportados pelo contrato remoto e a chamada poderia criar uma conta genérica incompleta.
+```text
+https://x8ki-letl-twmt.n7.xano.io/api:yFqRLsBC:v1
+```
 
-Para publicar o snapshot de forma segura, é necessário um workspace/ambiente Xano de desenvolvimento com permissão de escrita ou habilitar um plano que permita branch/sandbox. Após autorização do responsável, também foi tentada a criação de um workspace separado para desenvolvimento, mas a Metadata API respondeu `403 Access Denied`; nenhum workspace foi criado. O responsável precisa habilitar criação de ambientes no Xano ou fornecer outro workspace de desenvolvimento gravável antes que a integração possa ser ativada.
+A URL é pública. Não colocar tokens, senhas ou credenciais administrativas em código/documentação/arquivos versionados. Runtime de login/cadastro não utiliza autenticação CLI nem Meta API. O cliente de login exige base HTTPS sem credenciais embutidas, query ou fragmento; requisições usam timeout de 10 segundos, sem seguir redirecionamentos.
 
-## Diferença entre modelo remoto e snapshot local
+## Contratos utilizados pelo Reflex
 
-### Remoto, branch live `v1`
+| Operação | Entrada | Resposta consumida / comportamento |
+|---|---|---|
+| `POST /auth/login` | JSON `email`, `password` | `{authToken, user_id}`; token gerado com validade de 24 horas. Não depende de `account_type` nesta resposta |
+| `GET /auth/me` | Bearer no cabeçalho; sem dados de formulário | `id`, `created_at`, `name`, `email`, `role`, `account_type`. Classificação válida ADOTANTE/ONG ou `null` para ausente/inválida |
+| `POST /auth/signup` | Campos comuns e específicos abaixo | Código local retorna `authToken`, `user_id`, `account_type` e objeto `user` com dados selecionados. Cliente de cadastro verifica `user_id`, descarta token e orienta login |
 
-A tabela `user` contém `id`, `created_at`, `name`, `email`, `password`, `role` (`admin`/`member`) e `password_reset` (`token`, `expiration`, `used`). Há índice único de e-mail. Os campos locais `account_type`, `phone`, `address`, `city`, `uf`, `adopter_profile` e `ngo_profile` não constam no schema remoto obtido.
+`auth/me` obtém classificação do usuário autenticado, não do frontend. O cliente conserva apenas ID, nome e tipo; valida que o ID corresponde ao login e rejeita tipo inválido sem inferir via `role`. Não adicionar restrições de role ao contrato de login.
 
-A tabela de eventos encontrada chama-se `event_log` (singular), com `id`, `created_at`, `user_id`, `action` e `metadata`; `user_id` referencia `user`. O snapshot local usa o mesmo nome singular. A observação anterior de `events_log` (plural) não corresponde ao snapshot lido nesta auditoria e deve ser confirmada no painel Xano antes de qualquer ação de dados.
+Login normaliza e-mail; senha segue sem transformação. Respostas login 400/401/403 geram mensagem genérica de credenciais; me 401/403 indica sessão rejeitada. HTTP 429, timeout, falha de rede, outros erros e JSON/identidade inválidos recebem mensagens controladas, sem expor corpos HTTP ou exceções brutas.
 
-Os endpoints remotos obtidos para login, `/me` e signup são os fluxos genéricos antigos: usam `role`, signup define `member` e os três enviam o registro do usuário ao logger. Os endpoints remotos de redefinição também enviavam registros completos ao logger. O endpoint remoto `logs/user/my_events` filtra por `$auth.id`, mas retorna cada linha de evento sem projeção; metadata histórico pode conter hashes/tokens e fica visível ao próprio usuário autenticado. Nenhum desses endpoints foi modificado remotamente.
+### Cadastro existente
 
-### Snapshot local versionado
+- Comuns: `account_type`, `name`, `email`, `password`, `phone`, `address`, `city`, `uf`.
+- ADOTANTE: `cpf` e `birth_date` (ISO no envio; formulário usa dia/mês/ano).
+- ONG: `cnpj` e `description`.
+- Confirmação de senha é verificação local, não campo do contrato enviado.
+- Backend verifica tipo, documentos e duplicidade, normaliza documentos/telefone, exige data de nascimento válida anterior à atual para ADOTANTE e senha mínima com letra e número.
+- O schema local `user` inclui `account_type`, `adopter_profile` e `ngo_profile` JSON. Estes perfis não são tabelas de catálogo de ONGs nem endpoints de edição implementados.
+- Não adicionar credenciais/documentos a auditoria. Não assumir índice único de CPF/CNPJ nos perfis JSON: checagem por consulta merece revisão de concorrência futura.
+- Cadastro bem-sucedido não cria sessão Reflex. Cliente trata duplicidade 400/409/422 com mensagem genérica e não revela qual conta existe.
 
-O arquivo `xano/table/user.xs` contém perfis específicos e índices únicos planejados para email, CPF e CNPJ. A coluna `role` (`admin`/`member`) foi mantida separada de `account_type` (`ADOTANTE`/`ONG`); novo signup local atribui `member`, nunca `admin`.
+A validação local de senha admite letras acentuadas, enquanto a expressão backend utiliza letras ASCII. A consistência deve ser revisada em etapa própria, preservando o fluxo atual nesta execução.
 
-Os endpoints locais de autenticação foram atualizados para usar `account_type` e dados dos perfis. Signup exige e-mail/senha, mantém `role=member` separado de `account_type`, e o magic-link não seleciona o campo de autorização que não usa. Esse snapshot **não está implantado** na branch live. Login/signup/`me` passam somente `account_type` como metadata; redefinição e magic-link passam `{}`. O logger aplica uma allowlist `pick:["account_type"]` e usa `{}` como padrão, de modo que outros campos enviados por engano não sejam persistidos. Os callsites locais foram inspecionados. O endpoint local `logs/user/my_events` preserva os campos de evento, mas mascara metadata com `{}` para não devolver valores históricos potencialmente sensíveis.
+## Auditoria e recursos não utilizados pela interface
 
-## Contrato local dos endpoints
+| Recurso preparado/publicado no histórico | Contrato de proteção registrado no código local |
+|---|---|
+| `Quick Start/log_event` | Preserva `user_id` e `action`; reconstrói metadados somente como `{account_type: "ADOTANTE"}`, `{account_type: "ONG"}` ou `{}`. Descarta quaisquer chaves extras |
+| `auth/login` | Auditoria com `{}`, preservando credenciais, erros e token 24h |
+| `auth/me` | Auditoria com tipo válido somente ou `{}`; resposta de conta antiga pode ser `null` |
+| `reset/magic-link-login` | Metadados `{}`, sem objeto completo de usuário |
+| `reset/update_password` | Metadados `{}`, preservando fluxo de senha existente |
+| `logs/user/my_events` | Protege leitura histórica retornando metadados vazios, sem alterar/excluir eventos armazenados; mantém autenticação e filtro por usuário. A cópia local retorna lista, sem paginação configurada |
 
-- `auth/signup`: exige `account_type` (`ADOTANTE` ou `ONG`), e-mail e senha; valida presença dos campos específicos e consulta duplicidade de email/CPF/CNPJ. O armazenamento usa o tipo Xano `password` do schema. Validação de formato de CPF/CNPJ, validação de UF e política de telefone ainda não estão implementadas/confirmadas no snapshot.
-- `auth/login`: consulta por e-mail, verifica a senha com `security.check_password` e cria token Xano com expiração de 24 horas. As credenciais inválidas usam resposta genérica.
-- `auth/me`: exige autenticação Xano e retorna perfil próprio. A resposta inclui dados pessoais do usuário autenticado; revisar a necessidade de cada campo antes da integração do frontend.
-- `reset/magic-link-login`: valida token de uso único, validade e estado usado, cria token Xano de 24 horas e retorna `authToken`/`user_id`. A seleção de `role` foi removida por não ser usada pelo fluxo.
-- `reset/update_password`: exige autenticação, compara senha/confirmação e atualiza o campo Xano `password`.
-- Logging: não colocar usuário completo, senha, hash, token, email ou dados de perfil em metadata. O `user_id` permanece no campo próprio do evento para correlação interna.
-- `logs/user/my_events`: a consulta continua restrita a `$auth.id` e preserva os campos do evento, mas devolve `metadata: {}`. Isso também evita expor metadata histórico inseguro; não apaga os valores antigos armazenados no Xano.
+Os recursos de reset e consulta de eventos possuem cópias locais, mas não são usados pelo frontend atual. O link de recuperação no login é visual. Outros recursos presentes em `xano/` não são novas integrações; não executar endpoint funcional para conferir disponibilidade, pois até operações com verbo GET podem gravar auditoria ou outros dados.
 
-## Configuração do cliente Reflex de cadastro
+## Sessão e segurança
 
-O projeto ainda não define URL da API do Xano em `rxconfig.py`, `requirements.txt` ou nas instruções de setup. A URL base do grupo de API precisa ser obtida do workspace/branch escolhido; não deve ser presumida a partir do ID do workspace.
+Token privado no backend Reflex, sem cookie/localStorage/JavaScript; validade local máxima de 24 horas. Guarda da Home revalida identidade em me; falha fecha o acesso. Conta sem classificação válida não entra na Home. Logout limpa sessão local, sem revogação remota. Sessão persistente ainda depende de infraestrutura segura não implementada.
 
-O cliente local da tela de cadastro usa `XANO_API_BASE_URL` no processo backend e envia `POST {XANO_API_BASE_URL}/auth/signup`, conforme o snapshot versionado. Defina-a somente com a URL confirmada do grupo de API de uma branch compatível. A URL não está disponível neste repositório e o snapshot não está implantado na única branch remota conhecida (`v1`, live); portanto, a integração ainda não foi validada contra o Xano e o cadastro retorna mensagem de indisponibilidade sem essa configuração. Não inserir URL/token funcional no repositório, não expor token Xano em estado/JavaScript do navegador e não registrar corpo de requisição, senha ou cabeçalhos de autenticação.
+Ver [login e sessão](login-integration.md), [arquitetura](architecture.md) e [evidências](project-status.md). Não confundir assinatura de função sanitizadora com limpeza retroativa de registros históricos: não há exclusão de dados nesta etapa.
 
-A resposta versionada de signup inclui `authToken`, mas o cliente descarta esse token, pois o Reflex ainda não tem ciclo de sessão e armazenamento seguro implementados; após o cadastro, a pessoa deve entrar pela rota `/login`. A UI valida formato de CPF/CNPJ, UF e telefone, mas o snapshot documenta validação de presença e duplicidade, não essas validações de formato. Elas precisam ser implementadas e verificadas no backend antes de considerar o requisito de segurança atendido. O campo de responsável de ONG também não existe no contrato/schema versionado e não é coletado.
+## Validação e futuras alterações
 
-## Plano manual de migração não destrutivo
-
-1. O responsável pelo workspace deve confirmar o destino e criar/autorizar uma branch de desenvolvimento. No momento da auditoria, somente `v1` live estava disponível e o CLI reportou `Allow Push: false`.
-2. Exportar/registrar o schema atual e identificar dependências de `role`, eventos e autenticação na branch de desenvolvimento. Não alterar nem remover os valores históricos `admin/member`.
-3. Adicionar nessa branch, de forma aditiva, `account_type`, contato e perfis; definir tipos, campos obrigatórios e validações aceitos; configurar índices únicos globais para e-mail e adequados para CPF/CNPJ segundo as capacidades confirmadas do Xano.
-4. Definir uma classificação explícita para usuários existentes antes de preencher `account_type`. Não inferir `ADOTANTE`/`ONG` a partir de `role`; preservar registros não classificados até decisão do responsável.
-5. Confirmar a tabela `event_log` e seu relacionamento com `user`; não renomear tabela nem apagar eventos durante a migração. Aplicar os endpoints locais só depois que o schema compatível existir na branch de desenvolvimento.
-6. Aplicar na branch de desenvolvimento os callsites sanitizados de todos os escritores e a projeção segura de `logs/user/my_events`; eventos históricos permanecem armazenados e devem ser avaliados pelo responsável sem exportá-los para logs/clientes.
-7. Executar testes Xano nessa branch: signup válido/inválido para cada tipo, email/CPF/CNPJ duplicados, login, `/me`, magic link, reset de senha e leitura de eventos; inspecionar logs para provar ausência de dados sensíveis. Registrar evidência antes de qualquer promoção.
-8. Obter a URL do grupo de API dessa branch, configurar `XANO_API_BASE_URL` no processo backend e validar o cliente Reflex de cadastro já implementado localmente contra esse contrato.
-9. Antes de produção, revisar o plano com o responsável. Rollback deve restaurar endpoints/schema sem apagar registros; não remover `role`, contas antigas ou tabelas de eventos como ação automática.
-
-## Pendências confirmadas
-
-- Criar/autorizar uma branch Xano de desenvolvimento; a única branch encontrada é live e o workspace bloqueia push pelo CLI.
-- Aprovar o mapeamento explícito de contas existentes para `ADOTANTE`/`ONG` sem associá-las aos papéis de autorização.
-- Confirmar validação de CPF/CNPJ, UF e normalização de telefone; garantir as restrições no backend, não só no frontend.
-- Verificar no Xano os metadados históricos de autenticação e confirmar que os novos callsites sanitizados foram aplicados; a correção local não muda logs remotos existentes.
-- Aplicar no Xano remoto a sanitização dos escritores e a projeção de `logs/user/my_events`; metadata já armazenado não é apagado por estas alterações locais.
-- Confirmar a URL base e o contrato publicado do grupo de API antes de integração Reflex.
-- Rever a lista de campos pessoais devolvidos por login e `/me`.
+Testes offline utilizam mocks; nenhum cadastro, login, reset ou consulta funcional live foi executado na Etapa 21. Para futuras publicações: autorização seletiva por recurso, backup sem segredos, hashes e checagem de concorrência; distinguir Draft de live. Não usar push global, alterar dados ou reverter automaticamente auditoria para código inseguro. Qualquer teste integrado exige autorização e evidências específicas.

@@ -1,41 +1,8 @@
 import reflex as rx
 
+from Pet_Finder.auth import LoginState
 from Pet_Finder.home import home_page
 from Pet_Finder.register import registration_page
-
-
-class LoginState(rx.State):
-    email: str = ""
-    password: str = ""
-    remember_me: bool = True
-    show_password: bool = False
-    is_loading: bool = False
-    error_message: str = ""
-    info_message: str = ""
-
-    def set_email(self, value):
-        self.email = value
-
-    def set_password(self, value):
-        self.password = value
-
-    def toggle_password_visibility(self):
-        self.show_password = not self.show_password
-
-    def toggle_remember_me(self, value):
-        self.remember_me = value
-
-    def handle_submit(self):
-        if not self.email or not self.password:
-            self.error_message = "Informe seu e-mail e senha para continuar."
-            self.info_message = ""
-            return
-
-        self.is_loading = True
-        self.error_message = ""
-        self.info_message = "A integração com o endpoint de autenticação do Xano será habilitada quando o backend estiver conectado."
-        self.is_loading = False
-
 
 def login_page() -> rx.Component:
     return rx.box(
@@ -91,9 +58,10 @@ def login_page() -> rx.Component:
                                     ),
                                     rx.input(
                                         placeholder="seu@email.com",
-                                        value=LoginState.email,
-                                        on_change=LoginState.set_email,
-                                        type_="email",
+                                        name="email",
+                                        custom_attrs={"autoComplete": "username"},
+                                        required=True,
+                                        type="email",
                                         border_radius="0 0.85rem 0.85rem 0",
                                         border_left="none",
                                         height="3.15rem",
@@ -101,10 +69,14 @@ def login_page() -> rx.Component:
                                         background="#FFFFFF",
                                         border="1px solid #D1D5DB",
                                         border_color="#D1D5DB",
-                                        color="#1F2937",
+                                        color="#000000",
                                         box_shadow="none",
                                         padding_left="1rem",
                                         style={
+                                            "& .rt-TextFieldInput": {
+                                                "color": "#000000",
+                                                "WebkitTextFillColor": "#000000",
+                                            },
                                             "&:focus-within": {
                                                 "border_color": "#7C3AED",
                                                 "outline": "2px solid rgba(124, 58, 237, 0.5)",
@@ -112,6 +84,7 @@ def login_page() -> rx.Component:
                                             },
                                             ".rt-TextFieldInput::placeholder": {
                                                 "color": "#6B7280",
+                                                "WebkitTextFillColor": "#6B7280",
                                                 "opacity": "1",
                                             },
                                         },
@@ -138,64 +111,34 @@ def login_page() -> rx.Component:
                                         justify_content="center",
                                     ),
                                     rx.box(
-                                        rx.cond(
-                                            LoginState.show_password,
-                                            rx.input(
-                                                placeholder="Sua senha",
-                                                value=LoginState.password,
-                                                on_change=LoginState.set_password,
-                                                type_="text",
-                                                border_radius="0 0.85rem 0.85rem 0",
-                                                border_left="none",
-                                                height="3.15rem",
-                                                width="100%",
-                                                background="#FFFFFF",
-                                                border="1px solid #D1D5DB",
-                                                border_color="#D1D5DB",
-                                                color="#1F2937",
-                                                box_shadow="none",
-                                                padding_left="1rem",
-                                                padding_right="3.75rem",
-                                                style={
-                                                    "&:focus-within": {
-                                                        "border_color": "#7C3AED",
-                                                        "outline": "2px solid rgba(124, 58, 237, 0.5)",
-                                                        "outline_offset": "2px",
-                                                    },
-                                                    ".rt-TextFieldInput::placeholder": {
-                                                        "color": "#6B7280",
-                                                        "opacity": "1",
-                                                    },
+                                        rx.input(
+                                            placeholder="Sua senha",
+                                            name="password",
+                                            custom_attrs={"autoComplete": "current-password"},
+                                            required=True,
+                                            type=rx.cond(LoginState.show_password, "text", "password"),
+                                            border_radius="0 0.85rem 0.85rem 0",
+                                            border_left="none",
+                                            height="3.15rem",
+                                            width="100%",
+                                            background="#FFFFFF",
+                                            border="1px solid #D1D5DB",
+                                            border_color="#D1D5DB",
+                                            color="#1F2937",
+                                            box_shadow="none",
+                                            padding_left="1rem",
+                                            padding_right="3.75rem",
+                                            style={
+                                                "&:focus-within": {
+                                                    "border_color": "#7C3AED",
+                                                    "outline": "2px solid rgba(124, 58, 237, 0.5)",
+                                                    "outline_offset": "2px",
                                                 },
-                                            ),
-                                            rx.input(
-                                                placeholder="Sua senha",
-                                                value=LoginState.password,
-                                                on_change=LoginState.set_password,
-                                                type_="password",
-                                                border_radius="0 0.85rem 0.85rem 0",
-                                                border_left="none",
-                                                height="3.15rem",
-                                                width="100%",
-                                                background="#FFFFFF",
-                                                border="1px solid #D1D5DB",
-                                                border_color="#D1D5DB",
-                                                color="#1F2937",
-                                                box_shadow="none",
-                                                padding_left="1rem",
-                                                padding_right="3.75rem",
-                                                style={
-                                                    "&:focus-within": {
-                                                        "border_color": "#7C3AED",
-                                                        "outline": "2px solid rgba(124, 58, 237, 0.5)",
-                                                        "outline_offset": "2px",
-                                                    },
-                                                    ".rt-TextFieldInput::placeholder": {
-                                                        "color": "#6B7280",
-                                                        "opacity": "1",
-                                                    },
+                                                ".rt-TextFieldInput::placeholder": {
+                                                    "color": "#6B7280",
+                                                    "opacity": "1",
                                                 },
-                                            ),
+                                            },
                                         ),
                                         rx.button(
                                             rx.cond(
@@ -204,6 +147,7 @@ def login_page() -> rx.Component:
                                                 rx.icon(tag="eye", size=16, color="#6b7280"),
                                             ),
                                             on_click=LoginState.toggle_password_visibility,
+                                            type="button",
                                             variant="soft",
                                             size="2",
                                             border_radius="0.85rem",
@@ -227,8 +171,9 @@ def login_page() -> rx.Component:
                             rx.hstack(
                                 rx.checkbox(
                                     "Mantenha-me conectado",
-                                    checked=LoginState.remember_me,
-                                    on_change=LoginState.toggle_remember_me,
+                                    checked=False,
+                                    disabled=True,
+                                    title="Manter a sess?o entre acessos ainda n?o est? dispon?vel.",
                                     color="#7C3AED",
                                     size="2",
                                 ).set(style=rx.Style({"color": "#374151"})),
@@ -261,7 +206,7 @@ def login_page() -> rx.Component:
                             ),
                             rx.button(
                                 "Entrar",
-                                on_click=LoginState.handle_submit,
+                                type="submit",
                                 width="100%",
                                 height="3.2rem",
                                 background="linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)",
@@ -276,8 +221,8 @@ def login_page() -> rx.Component:
                             spacing="4",
                             width="100%",
                         ),
-                        as_="form",
                         on_submit=LoginState.handle_submit,
+                        reset_on_submit=True,
                         width="100%",
                     ),
                     rx.text(
@@ -402,4 +347,4 @@ app = rx.App()
 app.add_page(index, route="/")
 app.add_page(login_page, route="/login")
 app.add_page(registration_page, route="/register")
-app.add_page(home_page, route="/home")
+app.add_page(home_page, route="/home", on_load=LoginState.require_auth)

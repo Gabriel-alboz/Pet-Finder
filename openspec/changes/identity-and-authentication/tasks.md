@@ -15,11 +15,23 @@
 
 - [ ] 3.1 Adapt the shared Xano login/current-user flow to authenticate either account type and return only required safe account data; verify valid adopter/ONG logins, invalid credentials, and type identification using backend tests.
 
+### Stage 16.3 — local security preparation only
+
+- [x] 3.2 Re-read published workspace 151970/live v1 without drafts, records, or environment values; back up the six local security resources and directly related OpenSpec artifacts externally, and preserve pre-existing signup, user schema, .gitignore, and Reflex files.
+- [x] 3.3 Prepare and statically validate the six local security resources: compatible login, normalized authenticated classification, literal metadata allowlist, empty reset metadata, and historical metadata projection; compare each against published contracts without running functional endpoints. Xano MCP validation passed for all six with zero warnings; update_password and my_events already had the required local protection and were preserved. Runtime verification remains pending in 3.5.
+- [ ] 3.4 After separate approval, recheck remote drift and publish only the approved security resources with selective rollback that preserves sanitization; no publication is authorized by Stage 16.3.
+- [ ] 3.5 In an approved test environment, verify both account types, legacy classifications, invalid credentials/tokens, expiry, malformed/extra audit metadata, reset flows, unchanged signup, and own-user historical event responses without exposing sensitive fixtures. Existing task 3.1 remains incomplete until backend tests pass.
+
 ## 4. Reflex Account Experience
 
 - [ ] 4.1 Implement Reflex registration flows for adopter and ONG with the required fields and backend error handling; verify both forms submit to the matching Xano flow and display validation failures without relying on frontend validation for enforcement.
 - [ ] 4.2 Implement the shared Reflex login, account-type destination, and logout flow; verify both account types reach the correct private area and logout clears client state while the backend rejects the ended session.
 - [ ] 4.3 Protect adopter and NGO private routes in Reflex as a navigation layer while retaining Xano authorization; verify direct unauthenticated navigation redirects or returns an appropriate response and run the Reflex compile check.
+
+### Stage 18 — approved transient login increment
+
+- [x] 4.4 Connect the existing login and Home to the published login/me contracts using backend-only token/session state, backend account classification, a guarded Home and local logout; validate with offline mocked tests and Reflex dry compilation while preserving registration and XanoScript. This does not complete 4.2/4.3 or their broader acceptance criteria.
+- [ ] 4.5 Provide separately reviewed server-issued HttpOnly/Secure/SameSite session cookies and a reliable shared store before enabling persistent login; remote token revocation and live lifecycle tests remain pending under the original requirements.
 
 ## 5. Integrated Verification
 

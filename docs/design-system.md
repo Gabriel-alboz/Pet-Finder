@@ -13,39 +13,41 @@
 
 ## 2. Paleta de cores
 
+No campo de e-mail do login, o texto digitado usa preto `#000000`, inclusive no input interno Radix, para garantir contraste. O placeholder mantém `#6B7280`.
+
 Os valores HEX/RGBA abaixo foram conferidos no código. Os nomes à esquerda formalizam semanticamente os usos aprovados; ainda não existem como tokens centralizados em Python ou CSS.
 
 | Token semântico documentado | Valor exato | Finalidade observada | Origem | Situação |
 |---|---|---|---|---|
-| `primary` | `#7C3AED` | Ícones, checkbox, links, borda de foco e início do gradiente do botão principal. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L78), [linha 229](../Pet_Finder/Pet_Finder.py#L229), [linha 264](../Pet_Finder/Pet_Finder.py#L264) | Valor observado; função semântica aprovada |
-| `primary-hover` | `#6D28D9` | Início do gradiente de hover do botão Entrar. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L270) | Valor observado; função semântica aprovada |
-| `primary-strong` | `#5B21B6` | Fim do gradiente principal, badge, controle de senha e mensagens informativas. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L66), [linha 213](../Pet_Finder/Pet_Finder.py#L213), [linha 251](../Pet_Finder/Pet_Finder.py#L251) | Valor observado; função semântica aprovada |
-| `primary-deep` | `#4C1D95` | Nome Pet Finder e fim do gradiente de hover. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L54), [linha 270](../Pet_Finder/Pet_Finder.py#L270) | Valor observado; função semântica aprovada |
-| `lilac-soft` | `#EDE9FE` | Fim do gradiente do símbolo da marca. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L49) | Valor observado; função semântica aprovada |
-| `lilac-surface` | `#F5F3FF` | Fundo do botão mostrar/ocultar senha, avisos informativos e trecho do fundo geral. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L212), [linha 252](../Pet_Finder/Pet_Finder.py#L252), [linha 384](../Pet_Finder/Pet_Finder.py#L384) | Valor observado; função semântica aprovada |
-| `background-soft` | `#F8F7FC` | Fundo dos slots de ícone e início do gradiente da página. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L84), [linha 384](../Pet_Finder/Pet_Finder.py#L384) | Valor observado; função semântica aprovada |
-| `background-cool` | `#EEF2FF` | Fim do gradiente geral da página. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L384) | Valor observado; função semântica aprovada |
-| `text-primary` | `#1F2937` | Título principal, texto digitado e texto dos cadastros visuais. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L58), [linha 101](../Pet_Finder/Pet_Finder.py#L101), [linha 288](../Pet_Finder/Pet_Finder.py#L288) | Valor observado; função semântica aprovada |
-| `text-label` | `#374151` | Rótulos E-mail/Senha e texto da checkbox. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L75), [linha 231](../Pet_Finder/Pet_Finder.py#L231) | Valor observado; função semântica aprovada |
-| `text-secondary` | `#6B7280` | Texto de apresentação, placeholder e convite de cadastro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L61), [linha 111](../Pet_Finder/Pet_Finder.py#L111), [linha 282](../Pet_Finder/Pet_Finder.py#L282) | Valor observado; função semântica aprovada |
-| `surface` | `#FFFFFF` / `#ffffff` | Fundo dos campos, painel branco, cadastros e texto branco do botão/painel roxo. Varia apenas a capitalização no código. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L98), [linha 325](../Pet_Finder/Pet_Finder.py#L325), [linha 265](../Pet_Finder/Pet_Finder.py#L265) | Valor observado; função semântica aprovada |
-| `border-default` | `#D1D5DB` | Borda dos slots e campos de texto, com espessura de 1 px. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L81), [linha 99](../Pet_Finder/Pet_Finder.py#L99) | Valor observado; função semântica aprovada |
-| `border-subtle` | `#E5E7EB` | Borda dos controles visuais de cadastro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L290) | Valor observado; função semântica aprovada |
-| `focus-ring` | Borda `#7C3AED`; anel `rgba(124, 58, 237, 0.5)` | Foco do campo: contorno de 2 px, offset de 2 px. O botão usa um anel distinto `rgba(124, 58, 237, 0.2)`, 3 px, offset de 2 px. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L106), [linha 107](../Pet_Finder/Pet_Finder.py#L107), [linha 271](../Pet_Finder/Pet_Finder.py#L271) | Valores observados; os dois estados permanecem distintos |
-| `feedback-error` | Texto `#B91C1C`; fundo `#FEF2F2`; borda `#FECACA` | Caixa de validação de erro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L240), [linha 241](../Pet_Finder/Pet_Finder.py#L241), [linha 242](../Pet_Finder/Pet_Finder.py#L242) | Valores observados; conjunto formalizado |
-| `feedback-info` | Texto `#5B21B6`; fundo `#F5F3FF`; borda `#DDD6FE` | Caixa de informação. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L251), [linha 252](../Pet_Finder/Pet_Finder.py#L252), [linha 253](../Pet_Finder/Pet_Finder.py#L253) | Valores observados; conjunto formalizado |
+| `primary` | `#7C3AED` | Ícones, checkbox, links, borda de foco e início do gradiente do botão principal. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `primary-hover` | `#6D28D9` | Início do gradiente de hover do botão Entrar. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `primary-strong` | `#5B21B6` | Fim do gradiente principal, badge, controle de senha e mensagens informativas. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `primary-deep` | `#4C1D95` | Nome Pet Finder e fim do gradiente de hover. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `lilac-soft` | `#EDE9FE` | Fim do gradiente do símbolo da marca. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `lilac-surface` | `#F5F3FF` | Fundo do botão mostrar/ocultar senha, avisos informativos e trecho do fundo geral. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `background-soft` | `#F8F7FC` | Fundo dos slots de ícone e início do gradiente da página. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `background-cool` | `#EEF2FF` | Fim do gradiente geral da página. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `text-primary` | `#1F2937` | Título principal, texto digitado e texto dos cadastros visuais. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `text-label` | `#374151` | Rótulos E-mail/Senha e texto da checkbox. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `text-secondary` | `#6B7280` | Texto de apresentação, placeholder e convite de cadastro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `surface` | `#FFFFFF` / `#ffffff` | Fundo dos campos, painel branco, cadastros e texto branco do botão/painel roxo. Varia apenas a capitalização no código. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `border-default` | `#D1D5DB` | Borda dos slots e campos de texto, com espessura de 1 px. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `border-subtle` | `#E5E7EB` | Borda dos controles visuais de cadastro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valor observado; função semântica aprovada |
+| `focus-ring` | Borda `#7C3AED`; anel `rgba(124, 58, 237, 0.5)` | Foco do campo: contorno de 2 px, offset de 2 px. O botão usa um anel distinto `rgba(124, 58, 237, 0.2)`, 3 px, offset de 2 px. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valores observados; os dois estados permanecem distintos |
+| `feedback-error` | Texto `#B91C1C`; fundo `#FEF2F2`; borda `#FECACA` | Caixa de validação de erro. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valores observados; conjunto formalizado |
+| `feedback-info` | Texto `#5B21B6`; fundo `#F5F3FF`; borda `#DDD6FE` | Caixa de informação. | [Pet_Finder.py](../Pet_Finder/Pet_Finder.py) | Valores observados; conjunto formalizado |
 
 ### 2.1. Gradientes, transparências e sombras
 
 Os valores transparentes são mantidos como RGBA; não devem ser convertidos em HEX opaco:
 
-- Símbolo da marca: `linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L49).
-- Badge: `rgba(124, 58, 237, 0.08)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L70).
-- Botão principal: `linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)`; hover `linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L264), [linha 270](../Pet_Finder/Pet_Finder.py#L270).
-- Fundo da página: radial `rgba(196,181,253,0.45)` sobre `linear-gradient(135deg, #F8F7FC 0%, #F5F3FF 35%, #EEF2FF 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L384).
-- Painel roxo: overlay `rgba(79, 70, 229, 0.82)`, `rgba(91, 33, 182, 0.8)` e `rgba(124, 58, 237, 0.75)` sobre a foto externa; texto auxiliar branco a `0.82` de opacidade — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L332), [linha 335](../Pet_Finder/Pet_Finder.py#L335), [linha 366](../Pet_Finder/Pet_Finder.py#L366).
-- Sombras: botão `0 12px 30px rgba(124, 58, 237, 0.22)`; painel branco `0 24px 50px rgba(91, 33, 182, 0.12)`; painel roxo `0 24px 50px rgba(91, 33, 182, 0.2)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L268), [linha 328](../Pet_Finder/Pet_Finder.py#L328), [linha 374](../Pet_Finder/Pet_Finder.py#L374).
-- Borda do painel branco: `rgba(124, 58, 237, 0.08)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L326).
+- Símbolo da marca: `linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Badge: `rgba(124, 58, 237, 0.08)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Botão principal: `linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)`; hover `linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Fundo da página: radial `rgba(196,181,253,0.45)` sobre `linear-gradient(135deg, #F8F7FC 0%, #F5F3FF 35%, #EEF2FF 100%)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Painel roxo: overlay `rgba(79, 70, 229, 0.82)`, `rgba(91, 33, 182, 0.8)` e `rgba(124, 58, 237, 0.75)` sobre a foto externa; texto auxiliar branco a `0.82` de opacidade — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Sombras: botão `0 12px 30px rgba(124, 58, 237, 0.22)`; painel branco `0 24px 50px rgba(91, 33, 182, 0.12)`; painel roxo `0 24px 50px rgba(91, 33, 182, 0.2)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
+- Borda do painel branco: `rgba(124, 58, 237, 0.08)` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py).
 
 ## 3. Tipografia
 
@@ -75,17 +77,17 @@ Os valores em `rem`, pesos e presets de heading são declarados na tela; convers
 
 | Propriedade | Valores observados | Origem/observação |
 |---|---|---|
-| Layout geral | máximo `1180px`; painéis com máximo `560px`; largura responsiva `100%`, `100%`, `43%` | `rx.flex` com `wrap="wrap"`, `align="stretch"` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L376) |
-| Altura mínima da página | `100vh` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L385) |
-| Campo e slot de ícone | `3.15rem` (50,4 px em raiz 16 px) | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L79) |
-| Botão principal | `3.2rem` (51,2 px em raiz 16 px) | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L263) |
-| Botão mostrar/ocultar | mínimo `2.8rem`; posicionado no wrapper em `right="0.35rem"`, `top="50%"`, `translateY(-50%)` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L207) |
-| Raios | `0.8rem` avisos/cadastros; `0.85rem` campos e toggle; `0.9rem` botão e símbolo; `1.8rem` painel branco; `2rem` painel roxo; `999px` badge | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L47), [linha 69](../Pet_Finder/Pet_Finder.py#L69), [linha 94](../Pet_Finder/Pet_Finder.py#L94), [linha 267](../Pet_Finder/Pet_Finder.py#L267), [linha 327](../Pet_Finder/Pet_Finder.py#L327), [linha 369](../Pet_Finder/Pet_Finder.py#L369) |
+| Layout geral | máximo `1180px`; painéis com máximo `560px`; largura responsiva `100%`, `100%`, `43%` | `rx.flex` com `wrap="wrap"`, `align="stretch"` — [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Altura mínima da página | `100vh` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Campo e slot de ícone | `3.15rem` (50,4 px em raiz 16 px) | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Botão principal | `3.2rem` (51,2 px em raiz 16 px) | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Botão mostrar/ocultar | mínimo `2.8rem`; posicionado no wrapper em `right="0.35rem"`, `top="50%"`, `translateY(-50%)` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Raios | `0.8rem` avisos/cadastros; `0.85rem` campos e toggle; `0.9rem` botão e símbolo; `1.8rem` painel branco; `2rem` painel roxo; `999px` badge | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
 | Borda | campos `1px solid #D1D5DB`; cadastros `1px solid #E5E7EB`; painel branco `1px solid rgba(124, 58, 237, 0.08)` | A borda dos campos é visualmente compartilhada entre o slot do ícone e o input. |
-| Paddings | página x `[1rem, 2rem, 4rem]`, y `[1.5rem, 2rem, 3rem]`; painel branco x `[1.1rem, 1.4rem, 2.2rem]`, y `[1.5rem, 2rem, 2.4rem]`; painel roxo `[1.3rem, 1.7rem, 2.3rem]` | Arrays são valores responsivos; [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L323), [linha 370](../Pet_Finder/Pet_Finder.py#L370), [linha 386](../Pet_Finder/Pet_Finder.py#L386) |
-| Outros paddings explícitos | badge x `0.9rem`, y `0.45rem`; slot do ícone x `0.9rem`; input esquerdo `1rem`; senha direita `3.75rem`; avisos `0.8rem 0.9rem`; cadastro `0.85rem 1rem` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L67), [linha 80](../Pet_Finder/Pet_Finder.py#L80), [linha 103](../Pet_Finder/Pet_Finder.py#L103), [linha 155](../Pet_Finder/Pet_Finder.py#L155), [linha 244](../Pet_Finder/Pet_Finder.py#L244), [linha 289](../Pet_Finder/Pet_Finder.py#L289) |
+| Paddings | página x `[1rem, 2rem, 4rem]`, y `[1.5rem, 2rem, 3rem]`; painel branco x `[1.1rem, 1.4rem, 2.2rem]`, y `[1.5rem, 2rem, 2.4rem]`; painel roxo `[1.3rem, 1.7rem, 2.3rem]` | Arrays são valores responsivos; [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
+| Outros paddings explícitos | badge x `0.9rem`, y `0.45rem`; slot do ícone x `0.9rem`; input esquerdo `1rem`; senha direita `3.75rem`; avisos `0.8rem 0.9rem`; cadastro `0.85rem 1rem` | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
 | Gaps | tokens Radix `spacing="0", "2", "3", "4", "5"`; checkbox usa o default Radix `spacing="2"` | São tokens da biblioteca, não uma escala local de pixels. |
-| Contorno de foco | campo: 2 px, offset 2 px; botão: 3 px, offset 2 px | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py#L104), [linha 271](../Pet_Finder/Pet_Finder.py#L271) |
+| Contorno de foco | campo: 2 px, offset 2 px; botão: 3 px, offset 2 px | [Pet_Finder/Pet_Finder.py](../Pet_Finder/Pet_Finder.py) |
 | Sombras | `0 12px 30px`, `0 24px 50px` com RGBA roxos documentados acima | Suaves; aplicadas ao CTA e aos dois painéis. |
 
 ## 5. Padrões dos componentes
@@ -104,11 +106,11 @@ Gradiente roxo `#7C3AED` → `#5B21B6`, texto branco, peso 700, altura `3.2rem`,
 
 ### Checkbox e rótulo
 
-Checkbox Radix de tamanho `2`, cor de seleção `#7C3AED`, rótulo clicável junto ao controle e cor `#374151`. O valor inicial do estado é marcado. Não há estilo disabled explícito.
+Checkbox Radix de tamanho `2`, cor de seleção `#7C3AED`, rótulo junto ao controle e cor `#374151`. “Mantenha-me conectado” está desabilitado e desmarcado; persistência entre acessos não está implementada. Não há estilo disabled próprio explícito.
 
 ### Links e ícones
 
-Links usam roxo `#7C3AED` e peso 600. Os links de recuperação/cadastro têm `href="#"` e permanecem placeholders; não constituem rotas. Ícones de campo têm 18 px e roxo; olho tem 16 px e cinza `#6B7280`; benefícios do painel usam emoji decorativos. Hover/foco de links e nomes acessíveis específicos para botões apenas com ícone não estão definidos localmente.
+Links usam roxo `#7C3AED` e peso 600. Os links de cadastro apontam para `/register`; o link de recuperação permanece `href="#"`, sem fluxo operacional. Ícones de campo têm 18 px e roxo; olho tem 16 px e cinza `#6B7280`; benefícios do painel usam emoji decorativos. Hover/foco de links e nomes acessíveis específicos para botões apenas com ícone não estão definidos localmente.
 
 ### Cards, painéis e mensagens
 
@@ -147,3 +149,13 @@ Nos tamanhos observados no navegador, o layout ficou empilhado em viewport mobil
 5. Manter a interface em Reflex e usar seus componentes/estados; não adicionar outra tecnologia de frontend sem aprovação arquitetural.
 6. Esta versão documenta tokens, mas não os centraliza em código. Um módulo Python compartilhado pertence a uma mudança futura separada.
 7. A imagem do pug usa uma URL externa no protótipo; reavaliar hospedagem/localização e disponibilidade antes da preparação para produção.
+
+## 9. Navegação e estados demonstrativos da Home
+
+Reutilizar os componentes de `Pet_Finder/home.py`: menu compartilhado desktop/mobile, item com ícone Lucide, hover lilás e seleção roxa (`#F5F3FF` / `#5B21B6`), raio `0.8rem` e foco roxo. O desktop usa sidebar de `16rem`; no mobile, menu recolhível com os mesmos itens. Não duplicar menus ao acrescentar seções.
+
+Chats reutiliza heading, espaçamento `5` e estado vazio existentes: fundo branco, borda `#E5E7EB`, raio `1.2rem`, ícone roxo em superfície lilás. Deve exibir explicitamente que é uma interface demonstrativa sem backend. Sem conversas fictícias ou controles que aparentem enviar mensagens.
+
+Pets/ONGs recebem somente textos de recursos futuros, sem filtros operacionais. Configurações preserva conteúdo e logout, apresentando indicações por `account_type` autenticado, sem formulários. Não foram introduzidas cores, fontes ou padrões de layout nesta etapa. Compilação e inspeção estrutural não substituem nova inspeção visual desktop/mobile; observações de navegador registradas acima pertencem ao levantamento anterior.
+
+Referências Reflex consultadas para composição condicional e responsividade: [cond](https://reflex.dev/docs/library/dynamic-rendering/cond/) e [responsive](https://reflex.dev/docs/styling/responsive/). O comportamento foi também conferido na versão instalada pelo compile local.

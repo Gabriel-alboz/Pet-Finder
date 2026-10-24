@@ -102,6 +102,38 @@ O sistema SHALL oferecer um fluxo de login compartilhado por adotantes e ONGs, r
 - **WHEN** as credenciais fornecidas não autenticam uma conta
 - **THEN** o sistema não estabelece uma sessão autenticada
 
+### Requirement: Compatible login and authenticated classification contract
+
+O endpoint `POST auth/login` SHALL preservar os inputs de e-mail/senha, a validação de credenciais, os erros genéricos, a geração de token com validade de 86400 segundos e a resposta `{authToken, user_id}`. Esta correção SHALL NOT adicionar restrições de login por `role` ou `account_type`. O endpoint autenticado `GET auth/me` SHALL preservar `id`, `created_at`, `name`, `email` e `role`, e incluir `account_type` obtido do registro identificado por `$auth.id`.
+
+#### Scenario: Read a classified authenticated user
+- **WHEN** o usuário autenticado possui `account_type` igual a `ADOTANTE` ou `ONG`
+- **THEN** `auth/me` retorna exatamente essa classificação, sem consultar uma identidade fornecida pelo cliente
+
+#### Scenario: Preserve legacy or invalid classifications
+- **WHEN** a classificação do usuário autenticado está ausente ou não é `ADOTANTE` nem `ONG`
+- **THEN** `auth/me` retorna `account_type: null`, sem atribuir um tipo, alterar registros ou introduzir uma restrição adicional no login
+
+### Requirement: Strict audit metadata allowlist
+
+Os chamadores SHALL NOT enviar senhas, material de senha, tokens, CPF, CNPJ, e-mails ou objetos completos de usuário ao logger. Login e redefinição SHALL enviar `{}`; `auth/me` SHALL enviar somente classificação válida ou `{}`. A função `Quick Start/log_event` SHALL reconstruir `metadata` permitindo exclusivamente `account_type` com valor literal `ADOTANTE` ou `ONG`, descartando outras chaves e usando `{}` para classificação ausente ou inválida. A assinatura, as colunas próprias `user_id` e `action` e a gravação do evento SHALL ser preservadas. O cadastro e o envio de boas-vindas SHALL manter seus fluxos existentes.
+
+#### Scenario: Discard unapproved metadata
+- **WHEN** metadados contêm campos adicionais ou uma classificação ausente, desconhecida, não textual ou aninhada
+- **THEN** o logger grava somente a classificação literal permitida, se houver, ou `{}`, sem copiar outros valores
+
+#### Scenario: Preserve signup audit correlation
+- **WHEN** o cadastro envia `user_id`, `account_type` e `action` como metadados mínimos
+- **THEN** o logger mantém somente a classificação válida nos metadados e preserva `user_id` e `action` nas respectivas colunas do evento
+
+### Requirement: Safe historical audit response
+
+O endpoint `GET logs/user/my_events` SHALL exigir autenticação, filtrar pelo usuário autenticado e retornar `id`, `created_at`, `user_id`, `action` e `metadata: {}`. A proteção SHALL preservar a forma de listagem existente, sem excluir ou modificar eventos armazenados.
+
+#### Scenario: Read events containing historical sensitive metadata
+- **WHEN** um usuário autenticado consulta seus eventos, inclusive eventos antigos com metadados potencialmente sensíveis
+- **THEN** a resposta mascara os metadados com `{}`, mantém os demais campos permitidos e não inclui eventos de outro usuário
+
 ### Requirement: Logout invalidates authentication
 
 Usuários autenticados SHALL poder encerrar a autenticação. Após o logout, a sessão correspondente SHALL ser invalidada pelo backend conforme o mecanismo utilizado, e requisições protegidas feitas com a sessão encerrada SHALL ser recusadas.
