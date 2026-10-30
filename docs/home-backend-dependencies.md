@@ -15,7 +15,7 @@ Cadastro, login e consulta de identidade já usam Xano via serviço existente. *
 | Pets | Estado vazio e texto de filtros futuros; quiz opcional | RF-02/08: animais, propriedade, disponibilidade e pesquisa combinada |
 | Quiz | Estado demonstrativo, sem perguntas/regras/resultados | RF-09: critérios, preferências, catálogo e recomendações |
 | Chats | Título, subtítulo, ícone e vazio, aviso de interface demonstrativa | RF-05/06: conversas, participantes, mensagens e autorização |
-| Configurações | Aviso de edição indisponível, logout local, recursos futuros segmentados | RF-03/07: leitura/edição de campos permitidos e consentimento |
+| Configurações | Prévia por tipo, campos somente leitura, consentimentos desligados, pets indisponíveis e logout local | RF-03/07 parciais: pendentes leitura detalhada, edição de campos permitidos e consentimento persistente |
 
 `HomeState.active_section` seleciona conteúdo sem novas rotas. Menu desktop e mobile compartilham componentes, hover e seleção; navegação fecha o menu mobile. Não há rota independente `/chats`; acesso ocorre na Home protegida. Não existem conversas fictícias, filtros que aparentem funcionar ou ações de persistência nessas seções.
 

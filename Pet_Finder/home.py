@@ -3,6 +3,7 @@
 import reflex as rx
 
 from Pet_Finder.auth import LoginState
+from Pet_Finder.account_settings import account_settings
 
 
 SECTIONS = {
@@ -340,27 +341,6 @@ def _chats_content() -> rx.Component:
     )
 
 
-def _account_future_features() -> rx.Component:
-    return rx.vstack(
-        rx.heading("Recursos planejados", size="4", color="#1F2937"),
-        rx.cond(
-            LoginState.account_type == "ADOTANTE",
-            rx.text(
-                "Futuramente: editar perfil, informar preferências de adoção e descrever o pet que procura.",
-                color="#6B7280", line_height="1.6",
-            ),
-            rx.cond(
-                LoginState.account_type == "ONG",
-                rx.text(
-                    "Futuramente: atualizar informações institucionais, gerenciar a descrição e cadastrar e gerenciar pets.",
-                    color="#6B7280", line_height="1.6",
-                ),
-            ),
-        ),
-        width="100%", align="start", spacing="3",
-    )
-
-
 def _existing_section_content() -> rx.Component:
     return rx.cond(
         HomeState.active_section == "home",
@@ -386,13 +366,7 @@ def _existing_section_content() -> rx.Component:
                         _empty_state("O quiz ainda não está disponível", "Ainda não existem perguntas, regras de compatibilidade ou endpoints de persistência definidos para esta experiência.", "clipboard-list", "Voltar ao início"),
                         width="100%", align="stretch", spacing="5",
                     ),
-                    rx.vstack(
-                        _section_heading("Configurações da conta", "Consulte e atualize as informações da sua conta."),
-                        _empty_state("Sua conta está conectada", "A edição do perfil ainda não está disponível.", "user-round"),
-                        _account_future_features(),
-                        rx.button("Sair", on_click=LoginState.logout, background="#7C3AED", color="#FFFFFF", border_radius="0.8rem", _hover={"background": "#6D28D9"}, align_self="start"),
-                        width="100%", align="stretch", spacing="5",
-                    ),
+                    account_settings(_section_heading),
                 ),
             ),
         ),

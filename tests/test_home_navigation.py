@@ -3,13 +3,11 @@
 import json
 import time
 import unittest
-from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 from Pet_Finder.auth import LoginState
 from Pet_Finder.home import (
     HomeState,
-    _account_future_features,
     _chats_content,
     _home_layout,
     _sidebar,
@@ -147,19 +145,6 @@ class ChatsComponentsTests(unittest.TestCase):
         self.assertIn("mobile_menu_open", layout)
         self.assertIn("min-width: 48em", layout)
         self.assertIn("16rem", layout)
-
-    def test_account_hints_do_not_cross_profiles_or_classify_unknown_accounts(self):
-        for account_type, expected, forbidden in (
-            ("ADOTANTE", "preferências de adoção", "informações institucionais"),
-            ("ONG", "informações institucionais", "preferências de adoção"),
-            ("", "", "Futuramente:"),
-        ):
-            with patch("Pet_Finder.home.LoginState", SimpleNamespace(account_type=account_type)):
-                content = " ".join(texts(_account_future_features()))
-            if expected:
-                self.assertIn(expected, content)
-            self.assertNotIn(forbidden, content)
-
 
 if __name__ == "__main__":
     unittest.main()

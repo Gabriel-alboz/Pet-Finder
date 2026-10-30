@@ -1,4 +1,27 @@
-# Estado do projeto — Etapa 21
+# Estado do projeto — Etapa 23.2
+
+Atualização em 30/10/2026: Configurações possui prévias somente leitura para ADOTANTE e ONG, integradas à seção `account` da Home. Somente nome seguro da sessão é preenchido; e-mail e demais campos ficam vazios. Não há consulta detalhada, edição, salvamento, publicação de contato ou consentimento operacional. RF-03/RF-07 têm entrega visual parcial. Ver [limites e validação](account-settings-preview.md). O histórico da Etapa 21 abaixo permanece identificado como tal.
+
+## Validação da Etapa 23.2
+
+### Correção 23.2.1 — exibição do nome
+
+O responsável relatou layout correto e nome ausente no teste visual. A inspeção offline confirmou nome em `LoginState`, serialização e `value` reativo; não há uso de `default_value`. Foi identificada regra Radix que aplica cor e WebkitTextFillColor ao input interno somente leitura, independentemente da cor do contêiner. A correção explicita essas propriedades somente no campo de nome, seguindo o tratamento do login e preservando o Design System. Não altera autenticação ou outros campos. A causa visual específica relatada não foi reproduzida em navegador; confirmar exibição após carregar a versão corrigida.
+
+Validação desta correção: **42 testes offline aprovados** (três novos), incluindo nomes de ADOTANTE/ONG, atualização por revalidação simulada, ausência de sessão, expiração, tipo inválido, logout, vínculo reativo, somente leitura e proibição de HTTP real. `reflex compile --dry` aprovado; cinco mudanças OpenSpec válidas; `git diff --check` sem erros (somente avisos LF/CRLF). Alterações preexistentes preservadas; nenhuma consulta/alteração Xano, commit, push ou deploy.
+
+### Resultado anterior da Etapa 23.2
+
+- Sintaxe: quatro arquivos Python alterados/criados analisados com AST, sem erros.
+- Testes offline: **39 aprovados**, incluindo oito testes novos de Configurações. Um teste antigo de avisos foi substituído pela cobertura dos blocos reais. HTTP simulado/proibido, sem testes live.
+- `reflex compile --dry`: aprovado em Reflex 0.9.12.
+- `openspec validate --all --strict`: cinco mudanças aprovadas, sem arquivamento.
+- `git diff --check`: sem erros de whitespace; avisos LF/CRLF de normalização no Windows.
+- Rotas, login, cadastro, estado de sessão, cliente Xano, dependências e XanoScripts sem alterações no diff.
+- Responsividade validada estruturalmente por estilos gerados, sem inspeção visual de pixels. Roteiro desktop/tablet/mobile pendente em [Configurações](account-settings-preview.md).
+- Sem consulta funcional ou alteração Xano, commit, push ou deploy.
+
+## Histórico consolidado da Etapa 21
 
 Referência consolidada em 24/10/2026, baseada no código e no histórico informado pelo responsável. Nenhuma consulta funcional ao Xano live nesta etapa. Ver [arquitetura](architecture.md), [requisitos](functional-requirements.md) e [roadmap](roadmap.md).
 
@@ -13,7 +36,7 @@ Referência consolidada em 24/10/2026, baseada no código e no histórico inform
 | Chats | Item selecionável, seção vazia e aviso demonstrativo | Somente interface e navegação local, sem backend, mensagens ou histórico |
 | ONGs/Pets | Seções vazias e avisos de futura pesquisa | Sem listagens/filtros reais ou resultados fictícios |
 | Quiz | Seção demonstrativa e acesso pelo banner | Sem perguntas, algoritmo, resultados ou persistência; será opcional |
-| Configurações | Estado informativo/logout e avisos por tipo autenticado | Sem perfil detalhado/editável nem salvamento |
+| Configurações | Prévia somente leitura por tipo autenticado, blocos de dados, descrição, segurança e preferências/privacidade ou pets | Etapa 23.2: sem leitura detalhada Xano, edição, salvamento ou consentimento; somente nome da sessão |
 | Auditoria Xano | Cópias locais com metadados restritos e leitura histórica protegida | Seis publicações e validação estrutural informadas como concluídas na Etapa 17; não reexecutadas aqui |
 
 ## Login: concluído e parcial
@@ -55,4 +78,4 @@ Teste manual posterior: observar desktop/mobile; abrir Chats e voltar; conferir 
 
 ## Prioridades
 
-Finalizar matriz manual de autenticação e decidir infraestrutura de sessão persistente. Depois, configurações, gestão de pets e pesquisa com contratos aprovados; chat, quiz real e solicitações seguem o [roadmap](roadmap.md). RF-01 a RF-10 são futuros; RF-06 tem apenas entrega visual parcial.
+Finalizar matriz manual de autenticação e decidir infraestrutura de sessão persistente. Depois, integrar configurações, gestão de pets e pesquisa com contratos aprovados; chat, quiz real e solicitações seguem o [roadmap](roadmap.md). RF-01 a RF-10 dependem de integração futura; RF-06 e, após a Etapa 23.2, RF-03/RF-07 têm apenas entrega visual parcial.

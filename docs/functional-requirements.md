@@ -1,6 +1,6 @@
 # Requisitos funcionais — RF-01 a RF-10
 
-Catálogo de **requisitos futuros**. Uma interface demonstrativa não representa implementação operacional. RF-06 possui somente interface/navegação parcial na Etapa 21; seu backend permanece pendente. Ver [estado](project-status.md), [roadmap](roadmap.md) e [arquitetura](architecture.md).
+Catálogo de requisitos com integração **futura**. Uma interface demonstrativa não representa implementação operacional. RF-06 possui somente interface/navegação parcial na Etapa 21; RF-03/RF-07 possuem prévias visuais parciais na Etapa 23.2. Seus contratos operacionais permanecem pendentes. Ver [estado](project-status.md), [roadmap](roadmap.md) e [arquitetura](architecture.md).
 
 Regras transversais: autenticação e autorização no servidor; `account_type` autenticado, sem usar `role` como substituto; minimização de dados; nenhum token/documento/senha em logs; consentimento para divulgação; estados de erro/vazio claros. Definir contratos e modelo físico antes de criar tabelas/endpoints. Não presumir a existência de recursos Xano futuros.
 
@@ -32,7 +32,7 @@ Regras transversais: autenticação e autorização no servidor; `account_type` 
 - **Regras de negócio:** campos editáveis explicitamente permitidos; consentimento antes de divulgação; não expor documentos/credenciais; não permitir alteração de tipo/permissões pelo frontend.
 - **Dependências:** contratos de leitura/edição de perfil, preferências e consentimento, validações e autorização a definir.
 - **Critérios de aceitação:** salvar campos permitidos e persistir após nova consulta; rejeitar edição de outra conta; dados não autorizados invisíveis a ONGs; retirada de visibilidade efetiva em novas consultas.
-- **Status:** futuro. Configurações mostra aviso para ADOTANTE; não existe formulário operacional de edição.
+- **Status:** parcial, somente prévia visual na Etapa 23.2. ADOTANTE vê dados somente leitura, apresentação, preferências e privacidade com controles desativados. Nome vem da sessão; demais campos vazios. Leitura detalhada, edição, salvamento e consentimento no backend permanecem futuros; RF-03 não concluído.
 
 ## RF-04 — ONGs encontrarem adotantes interessados
 
@@ -72,7 +72,7 @@ Regras transversais: autenticação e autorização no servidor; `account_type` 
 - **Regras de negócio:** somente usuários autorizados modificam a organização; separar contatos públicos e dados privados; validação no backend; não permitir transferência indevida de propriedade.
 - **Dependências:** leitura/edição institucional, modelo de autorização e contratos a definir; RF-08 para pets.
 - **Critérios de aceitação:** dados permitidos persistem; outra ONG/ADOTANTE não edita a organização; informações privadas não aparecem publicamente; acesso à gestão preserva propriedade.
-- **Status:** futuro. Configurações apresenta apenas aviso exclusivo de ONG, sem edição.
+- **Status:** parcial, somente prévia visual na Etapa 23.2. ONG vê dados institucionais, descrição, localização/contato, Meus pets e segurança. Campos somente leitura, sem edição, publicação de contatos ou cadastro de pets. RF-07 não concluído; depende de contratos de perfil e RF-08.
 
 ## RF-08 — Cadastro e gerenciamento de pets
 

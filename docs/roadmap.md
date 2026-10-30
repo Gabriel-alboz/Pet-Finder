@@ -5,7 +5,7 @@ Planejamento futuro, sem autorizar implementação/publicação. Critérios em [
 | Ordem | Entrega | Dependências Xano / infraestrutura | Critério de avanço |
 |---|---|---|---|
 | 1 | Finalizar testes de autenticação | Contratos atuais; nenhuma tabela nova para matriz manual. Persistência demanda decisão de infraestrutura servidor/cookie seguro | Ambos os perfis, credenciais inválidas, reload, expiração, acesso anônimo, logout e falhas de rede validados com autorização |
-| 2 | Configurações ADOTANTE/ONG (RF-03/07) | Leitura/edição permitida, autorização, preferências/consentimento; novos endpoints e possível ampliação de schema | Cada perfil edita somente o permitido; dados privados permanecem protegidos |
+| 2 | Configurações ADOTANTE/ONG (RF-03/07): prévia visual parcial na Etapa 23.2 | Pendentes leitura/edição permitida, autorização, preferências/consentimento; novos contratos e possível ampliação de schema | Cada perfil edita somente o permitido; dados privados permanecem protegidos. Prévia somente leitura não conclui a entrega |
 | 3 | Gerenciamento de pets (RF-08) | Modelo persistente, vínculo de propriedade à ONG, fotos/storage e endpoints a definir | ONG gerencia somente seus animais; disponibilidade consistente |
 | 4 | Pesquisa/filtros (RF-01/02/04) | Listagens ONGs/pets, filtros combinados, localização e descoberta consentida de adotantes; contratos e índices/modelos a definir | Resultados reais, paginação, vazio e privacidade. Busca independente do quiz |
 | 5 | Chat/comunicação (RF-05/06) | Conversas, participantes, mensagens, endpoints, autorização e atualização a definir | Histórico privado e envio/recebimento reais; não lidas posteriormente. UI atual não cumpre esta entrega |

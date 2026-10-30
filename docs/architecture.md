@@ -22,6 +22,7 @@ O token Xano permanece no backend. O diagrama não representa persistência entr
 | `Pet_Finder/Pet_Finder.py` | App, registro de rotas, tela de login |
 | `Pet_Finder/auth.py` | `LoginState`, sessão privada transitória, guarda e logout |
 | `Pet_Finder/home.py` | `HomeState`, menu desktop/mobile compartilhado e seções |
+| `Pet_Finder/account_settings.py` | Componentes compartilhados da prévia somente leitura de configurações, sem novo estado ou HTTP |
 | `Pet_Finder/register.py` | Formulários, estado e validações de cadastro |
 | `Pet_Finder/services/xano.py` | Cliente assíncrono de login, identidade e cadastro |
 | `rxconfig.py`, `requirements.txt` | Configuração Reflex e dependências |
@@ -55,7 +56,7 @@ Não há token em cookie Reflex, localStorage ou JavaScript. Não há infraestru
 
 ## Perfis e cadastro
 
-`account_type` vem da identidade autenticada; frontend e `role` não concedem permissões. Tipo ausente/inválido bloqueia o login, sem conversão automática de conta antiga. A Home usa a classificação apenas para avisos futuros. Autorização de novas operações deverá existir no backend.
+`account_type` vem da identidade autenticada; frontend e `role` não concedem permissões. Tipo ausente/inválido bloqueia o login, sem conversão automática de conta antiga. A Home usa a classificação para selecionar a prévia visual de Configurações de ADOTANTE/ONG, protegida também por `can_view_home`. Somente nome da sessão é preenchido; sem novo estado, armazenamento ou HTTP. Autorização de novas operações deverá existir no backend. Ver [prévia de configurações](account-settings-preview.md).
 
 Cadastro envia campos comuns/específicos a `auth/signup`; sucesso não cria sessão Reflex automaticamente e informa que é necessário fazer login. Perfis JSON em `user` não significam edição de perfil ou busca pública implementada. Ver [contratos](xano-authentication-setup.md).
 

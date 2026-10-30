@@ -9,6 +9,7 @@ Plataforma acadêmica de adoção responsável que aproxima **ADOTANTES** e **ON
 - O responsável informou teste manual bem-sucedido com conta existente e acesso à Home. Isso não comprova recarga, logout ou todos os cenários de proteção no navegador.
 - Home responsiva com seções Início, ONGs, Pets, Quiz, Chats e Configurações. Catálogos, quiz, edição de perfil e Chats são **interfaces demonstrativas**, sem integração de dados dessas funcionalidades.
 - Chats tem somente navegação e estado vazio, sem mensagens reais.
+- Etapa 23.2: Configurações possui prévias específicas de ADOTANTE/ONG, somente leitura e sem salvamento. Apenas nome vem da sessão; consentimentos estão desligados e indisponíveis. [Detalhes e limites](docs/account-settings-preview.md).
 
 Detalhes e evidências em [Estado do projeto](docs/project-status.md). Recursos futuros não devem ser apresentados como implementados.
 
