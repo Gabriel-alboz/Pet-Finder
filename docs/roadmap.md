@@ -15,4 +15,6 @@ Planejamento futuro, sem autorizar implementação/publicação. Critérios em [
 
 Segurança/testes acompanham todas as etapas. Dependências são **propostas**, não nomes ou existência confirmada de tabelas/endpoints. O ambiente atual é Free sem branch isolada; não presumir staging nem realizar escritas live sem autorização.
 
+Etapa 23.3.2 prepara GET próprio somente localmente, com snapshot separado e verificações estáticas. Permanecem pendentes revisão/autorização de publicação, testes controlados e integração Reflex (23.4). PATCH e dados específicos seguem 23.3.3/23.3.4. RF-03/RF-07 não concluídos. Ver [contrato e limitações](account-profile-read.md).
+
 Etapa 21 entrega documentação, interface Chats e avisos visuais. Não inclui backend, integrações, commit, push ou deploy. Mudanças anteriores OpenSpec são preservadas, sem arquivamento automático.

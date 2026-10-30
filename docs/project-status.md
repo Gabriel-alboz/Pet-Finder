@@ -1,4 +1,12 @@
-# Estado do projeto — Etapa 23.2
+# Estado do projeto — Etapa 23.3.2 (somente local)
+
+## Etapa 23.3.2 — consulta de perfil preparada somente localmente
+
+Criado `xano/api/authentication/account/profile_GET.xs` com Bearer obrigatório, consulta por `$auth.id`, projeções por tipo, documentos mascarados e defaults para JSON legado. **Não publicado e não integrado ao Reflex.** Sem PATCH, alteração de schema ou escrita/auditoria. RF-03/RF-07 continuam parciais. [Contrato e limites](account-profile-read.md).
+
+Nova conferência administrativa de user/Authentication e login/me/signup, sem registros ou execução de APIs da aplicação. Snapshot separado em `backups/xano-definitions/20261030T230124178457Z-account-profile`, com manifesto/IDs/horário/hashes; não é backup de registros nem exportação completa do grupo. Sintaxe XanoScript aprovada sem avisos; testes estáticos/offline e publicação futura possuem limites descritos no contrato.
+
+Validação: **53 testes Python aprovados**, incluindo 11 verificações novas estáticas/aritméticas do contrato; sintaxe Python válida; XanoScript validado oficialmente com zero avisos; `reflex compile --dry` aprovado; seis mudanças OpenSpec aprovadas em modo estrito; `git diff --check` sem erros, com avisos LF/CRLF no Windows. Snapshot verificado por hashes. Os XanoScripts anteriores e todos os arquivos do frontend/autenticação/cadastro/serviços permaneceram idênticos ao início. Nenhum teste funcional live, publicação, commit, push ou deploy. Cabeçalhos HTTP efetivos, filtros em runtime, cache e políticas de histórico ainda dependem de revisão/teste controlado autorizado.
 
 Atualização em 30/10/2026: Configurações possui prévias somente leitura para ADOTANTE e ONG, integradas à seção `account` da Home. Somente nome seguro da sessão é preenchido; e-mail e demais campos ficam vazios. Não há consulta detalhada, edição, salvamento, publicação de contato ou consentimento operacional. RF-03/RF-07 têm entrega visual parcial. Ver [limites e validação](account-settings-preview.md). O histórico da Etapa 21 abaixo permanece identificado como tal.
 

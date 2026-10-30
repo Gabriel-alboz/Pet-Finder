@@ -1,0 +1,5 @@
+# Immutable evidence: preserve bytes, avoid line merging and textual rewrites.
+/backups/xano-definitions/** binary
+# These existing LF sources are referenced by local_sha256 in the manifests.
+/xano/table/user.xs text eol=lf
+/xano/api/authentication/auth/*.xs text eol=lf

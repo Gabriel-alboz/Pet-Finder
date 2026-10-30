@@ -62,6 +62,8 @@ Cadastro envia campos comuns/específicos a `auth/signup`; sucesso não cria ses
 
 ## Backend e evolução
 
+Na Etapa 23.3.2 foi preparado **somente localmente** o contrato `GET account/profile`, em `xano/api/authentication/account/profile_GET.xs`, sem publicação nem integração ao frontend. Usa auth user/$auth.id e projeção privada sem efeitos persistentes; não amplia auth/me. Ver [contrato de leitura](account-profile-read.md). A existência do arquivo não indica endpoint operacional.
+
 Workspace 151970, live `v1`, plano Free sem branch isolada no ambiente atual. A publicação seletiva de autenticação/auditoria foi informada como concluída na Etapa 17; a Etapa 21 não consulta nem modifica recursos remotamente. Os contratos refletem código local e histórico informado, não nova certificação live.
 
 RF-01 a RF-10 dependem de contratos aprovados, registrados em [requisitos](functional-requirements.md). Conceitos do [modelo de domínio](domain-model.md) não equivalem a tabelas existentes. Evoluir incrementalmente com componentes e [Design System](design-system.md) existentes.

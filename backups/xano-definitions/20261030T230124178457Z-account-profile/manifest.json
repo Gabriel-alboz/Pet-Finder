@@ -1,0 +1,178 @@
+{
+  "captured_at_utc": "2026-10-30T23:01:24.178457+00:00",
+  "workspace_id": 151970,
+  "branch": "v1",
+  "source": "GET Meta API; include_draft=false; records=false; env=false",
+  "records_included": false,
+  "credentials_included": false,
+  "group_id": 434180,
+  "group_metadata_projection": [
+    "id",
+    "name",
+    "branch",
+    "canonical",
+    "active",
+    "cache",
+    "history"
+  ],
+  "omitted_group_settings": "swagger tokens, secrets and unapproved metadata omitted; not a full configuration backup",
+  "account_profile_published": false,
+  "resources": [
+    {
+      "id": 897554,
+      "name": "user",
+      "filename": "user.xs",
+      "sha256": "b2f880258c74d9f4f7de28fb3c53005145de9a6aa14562af7fb3d8c05336ddae",
+      "local_file": "xano/table/user.xs",
+      "local_sha256": "77df995beac628c5739bb60bfd1b38a28c8d0af5c370dc258c78b662d55adcc5",
+      "normalized_matches_local": true
+    },
+    {
+      "id": 4063127,
+      "name": "auth/login",
+      "filename": "login_POST.xs",
+      "sha256": "dc7a16255dbcbbe5aa58eb141cb3576e3d4d4ee3e7a2cca1b6898e1274af1e6d",
+      "local_file": "xano/api/authentication/auth/login_POST.xs",
+      "local_sha256": "6c3e1e78a8016c43dfb5b21a68961363f2fb02a9a57944c511081ea9469c9e58",
+      "normalized_matches_local": true
+    },
+    {
+      "id": 4063128,
+      "name": "auth/me",
+      "filename": "me_GET.xs",
+      "sha256": "ba90394d70e2c30e53108be9018ab966bd8575958b40c0b388989b16f4d11b26",
+      "local_file": "xano/api/authentication/auth/me_GET.xs",
+      "local_sha256": "9a11f98d35b556a035a026eff07eb241e9cc2d69ffe3292f045652e3e21656ec",
+      "normalized_matches_local": true
+    },
+    {
+      "id": 4063129,
+      "name": "auth/signup",
+      "filename": "signup_POST.xs",
+      "sha256": "16ebde932802502a9782c28ac37463704f738182860d7f402f3f262300d97926",
+      "local_file": "xano/api/authentication/auth/signup_POST.xs",
+      "local_sha256": "6bd143a3f6b9a199a72fafaea0705b40b734e7a58e901da7c25ad59061d868b7",
+      "normalized_matches_local": true
+    },
+    {
+      "id": 434180,
+      "name": "Authentication safe metadata only",
+      "filename": "authentication-group.json",
+      "sha256": "4f517e4478faef81897e48741b8fd6536582f0fcdac3caf50781b24e1ee410a8"
+    }
+  ],
+  "endpoint_inventory": [
+    {
+      "id": 4063127,
+      "name": "auth/login",
+      "verb": "POST",
+      "auth": false,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063128,
+      "name": "auth/me",
+      "verb": "GET",
+      "auth": 897554,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063129,
+      "name": "auth/signup",
+      "verb": "POST",
+      "auth": false,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063131,
+      "name": "message/send_welcome_email",
+      "verb": "POST",
+      "auth": false,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063132,
+      "name": "reset/magic-link-login",
+      "verb": "POST",
+      "auth": false,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063133,
+      "name": "reset/request-reset-link",
+      "verb": "GET",
+      "auth": false,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    },
+    {
+      "id": 4063134,
+      "name": "reset/update_password",
+      "verb": "POST",
+      "auth": 897554,
+      "cache": {
+        "active": false,
+        "ttl": 3600,
+        "input": true,
+        "auth": true,
+        "datasource": true,
+        "ip": false,
+        "headers": [],
+        "env": []
+      }
+    }
+  ]
+}
